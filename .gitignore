@@ -1,0 +1,52 @@
+## Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+x64/
+x86/
+
+## NuGet packages (never push these)
+*.nupkg
+**/packages/*
+!**/packages/build/
+.nuget/
+
+## Project-specific
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ASP.NET
+AppData/
+
+## Logs
+*.log
+logs/
+
+## Environment & Secrets (VERY IMPORTANT)
+appsettings.Development.json
+*.pfx
+*.p12
+secrets.json
+.env
+
+## OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## Rider IDE
+.idea/
+
+## Test results
+TestResults/
+*.trx
+*.coverage
