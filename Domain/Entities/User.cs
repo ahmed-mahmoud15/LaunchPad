@@ -22,6 +22,7 @@ namespace Domain.Entities
         public ICollection<UserCv> Cvs { get; set; } = new List<UserCv>();
         public ICollection<Assessment> Assessments { get; set; } = new List<Assessment>();
         public ICollection<Interview> Interviews { get; set; } = new List<Interview>();
-        public ICollection<Job> PostedJobs { get; set; } = new List<Job>();
+        public ICollection<Job> AppliedJobs { get; set; } = new List<Job>();
+        public ICollection<CvJobAnalysis> AnalysedJobs { get; set; } = new List<CvJobAnalysis>();
     }
 }
