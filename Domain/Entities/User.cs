@@ -20,7 +20,7 @@ namespace Domain.Entities
         public ICollection<UserEducation> Educations { get; set; } = new List<UserEducation>();
         public ICollection<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
         public ICollection<UserCv> Cvs { get; set; } = new List<UserCv>();
-        public ICollection<CodingAttempt> CodingAttempts { get; set; } = new List<CodingAttempt>();
+        public ICollection<Assessment> Assessments { get; set; } = new List<Assessment>();
         public ICollection<Interview> Interviews { get; set; } = new List<Interview>();
         public ICollection<Job> PostedJobs { get; set; } = new List<Job>();
     }

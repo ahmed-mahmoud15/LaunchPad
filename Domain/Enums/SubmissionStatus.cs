@@ -8,7 +8,8 @@ namespace Domain.Enums
 {
     public enum SubmissionStatus
     {
-        Accepted = 1,
+        NotAttempted = 1,
+        Accepted,
         WrongAnswer,
         TimeLimitExceeded
     }
