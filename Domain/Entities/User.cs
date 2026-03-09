@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Domain.Entities
 {
@@ -14,5 +15,13 @@ namespace Domain.Entities
         public DateOnly JoinDate { get; set; }
         public bool IsActive { get; set; }
         public UserRole Role { get; set; }
+
+        public ICollection<UserExperience> Experiences { get; set; } = new List<UserExperience>();
+        public ICollection<UserEducation> Educations { get; set; } = new List<UserEducation>();
+        public ICollection<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
+        public ICollection<UserCv> Cvs { get; set; } = new List<UserCv>();
+        public ICollection<CodingAttempt> CodingAttempts { get; set; } = new List<CodingAttempt>();
+        public ICollection<Interview> Interviews { get; set; } = new List<Interview>();
+        public ICollection<Job> PostedJobs { get; set; } = new List<Job>();
     }
 }

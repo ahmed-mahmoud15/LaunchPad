@@ -12,8 +12,9 @@ namespace Domain.Entities
         public int UserId { get; set; } 
         public string FileName { get; set; }
         public string FilePath { get; set; }
-        public bool IsDefault { get; set; }
+        public bool IsDefault { get; set; } = false;
         public DateTime UploadedAt { get; set; } = DateTime.Now;
+        public int Score { get; set; }
 
         public User User { get; set; }
     }
