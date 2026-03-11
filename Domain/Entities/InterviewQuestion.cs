@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public int QuestionId { get; set; }
+        public int InterviewId { get; set; }
         public string UserResponse { get; set; }
         public string? Feedback { get; set; }
 

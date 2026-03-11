@@ -12,7 +12,7 @@ namespace API.Controllers
         public UsersController(IUserService userService) {
             this.userService = userService;
         }
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) {
             var result = await userService.GetByIdAsync(id);
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.ErrorMessage);

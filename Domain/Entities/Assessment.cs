@@ -25,6 +25,6 @@ namespace Domain.Entities
         public int Score { get; set; }
 
         public User User { get; set; }
-        public ICollection<AssessmentQuestion> Questions = new List<AssessmentQuestion>();
+        public ICollection<AssessmentQuestion> Questions { get; set; } = new List<AssessmentQuestion>();
     }
 }
