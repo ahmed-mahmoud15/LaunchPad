@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Infrastructure.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
@@ -29,6 +30,24 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserSkillConfiguration());
+            modelBuilder.ApplyConfiguration(new SkillConfiguration());
+            modelBuilder.ApplyConfiguration(new JobConfiguration());
+            modelBuilder.ApplyConfiguration(new JobTrackConfiguration());
+            modelBuilder.ApplyConfiguration(new JobSkillConfiguration());
+            modelBuilder.ApplyConfiguration(new AssessmentConfiguration());
+            modelBuilder.ApplyConfiguration(new AssessmentQuestionConfiguration());
+            modelBuilder.ApplyConfiguration(new InterviewConfiguration());
+            modelBuilder.ApplyConfiguration(new InterviewQuestionConfiguration());
+            modelBuilder.ApplyConfiguration(new CodingQuestionConfiguration());
+            modelBuilder.ApplyConfiguration(new QuestionTopicConfiguration());
+            modelBuilder.ApplyConfiguration(new HrQuestionConfiguration());
+            modelBuilder.ApplyConfiguration(new CvJobAnalysisConfiguration());
+            modelBuilder.ApplyConfiguration(new UserCvConfiguration());
+            modelBuilder.ApplyConfiguration(new UserExperienceConfiguration());
+            modelBuilder.ApplyConfiguration(new UserEducationConfiguration());
+            modelBuilder.ApplyConfiguration(new ApplicationHistoryConfiguration());
         }
     }
 }

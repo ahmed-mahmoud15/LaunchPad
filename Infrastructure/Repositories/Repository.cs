@@ -23,7 +23,6 @@ namespace Infrastructure.Repositories
         public async Task AddAsync(T item)
         {
             await set.AddAsync(item);
-            await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -32,7 +31,6 @@ namespace Infrastructure.Repositories
             if(item is not null)
             {
                 set.Remove(item);
-                await context.SaveChangesAsync();
             }
         }
 
@@ -49,7 +47,6 @@ namespace Infrastructure.Repositories
         public async Task UpdateAsync(T item)
         {
             set.Update(item);
-            await context.SaveChangesAsync();
         }
     }
 }

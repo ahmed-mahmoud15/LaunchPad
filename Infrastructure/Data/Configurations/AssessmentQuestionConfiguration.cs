@@ -10,7 +10,7 @@ namespace Infrastructure.Data.Configurations
         {
             builder.HasKey(aq => aq.Id);
 
-            builder.Property(aq => aq.CodeSubmitted).IsRequired();
+            builder.Property(aq => aq.CodeSubmitted);
             builder.Property(aq => aq.LanguageUsed).IsRequired().HasMaxLength(50);
             builder.Property(aq => aq.Status).IsRequired();
 

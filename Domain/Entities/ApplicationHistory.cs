@@ -15,6 +15,6 @@ namespace Domain.Entities
         public string? Notes { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public Job Job { get; set; }
+        public JobTrack Job { get; set; }
     }
 }

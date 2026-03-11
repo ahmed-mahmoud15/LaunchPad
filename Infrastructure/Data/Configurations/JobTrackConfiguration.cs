@@ -8,6 +8,8 @@ namespace Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<JobTrack> builder)
         {
+            builder.ToTable("JobTracks");
+
             builder.Property(jt => jt.CompanyName).IsRequired().HasMaxLength(50);
             builder.Property(jt => jt.Location).HasMaxLength(200);
             builder.Property(jt => jt.Salary).HasColumnType("decimal(18,2)");

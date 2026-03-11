@@ -19,14 +19,6 @@ namespace Infrastructure.Data.Configurations
             builder.Property(x => x.Role).IsRequired();
 
             builder.HasIndex(x => x.Email).IsUnique();
-
-            builder.HasMany(u => u.Experiences).WithOne(e => e.User).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(u => u.Educations).WithOne(e => e.User).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(u => u.Cvs).WithOne(e => e.User).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(u => u.Assessments).WithOne(e => e.User).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(u => u.Interviews).WithOne(e => e.User).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(u => u.AnalysedJobs).WithOne(e => e.User).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(u => u.UserSkills).WithOne(e => e.User).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

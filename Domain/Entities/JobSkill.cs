@@ -8,7 +8,7 @@ namespace Domain.Entities
         public int SkillId { get; set; }
         public SkillLevel RequiredLevel { get; set; }
 
-        public Job Job { get; set; }
+        public JobTrack Job { get; set; }
         public Skill Skill { get; set; }
     }
 }

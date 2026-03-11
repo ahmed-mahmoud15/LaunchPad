@@ -13,12 +13,6 @@ namespace Infrastructure.Data.Configurations
             builder.Property(h => h.Status).IsRequired();
             builder.Property(h => h.Notes).HasMaxLength(1000);
             builder.Property(h => h.UpdatedAt).IsRequired();
-
-            // Job navigation points to JobTrack (parent), cascade handled there
-            builder.HasOne(h => h.Job)
-                .WithMany()
-                .HasForeignKey(h => h.JobId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
