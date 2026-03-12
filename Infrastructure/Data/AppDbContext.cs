@@ -49,6 +49,10 @@ namespace Infrastructure.Data
             modelBuilder.ApplyConfiguration(new QuestionTopicConfiguration());
             modelBuilder.ApplyConfiguration(new HrQuestionConfiguration());
             modelBuilder.ApplyConfiguration(new CvJobAnalysisConfiguration());
+
+
+
+            modelBuilder.Seed();
         }
     }
 }
