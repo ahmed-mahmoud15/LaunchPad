@@ -8,7 +8,7 @@ namespace Infrastructure.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<UserExperience> UserExperiences { get; set; }
-        public DbSet<UserEducation>  UserEducations { get; set; }
+        public DbSet<UserEducation> UserEducations { get; set; }
         public DbSet<UserCv> UserCvs { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<UserSkill> UserSkills { get; set; }
@@ -17,13 +17,14 @@ namespace Infrastructure.Data
         public DbSet<JobSkill> JobSkills { get; set; }
         public DbSet<ApplicationHistory> ApplicationHistory { get; set; }
         public DbSet<Assessment> Assessments { get; set; }
-        public DbSet<AssessmentQuestion> AssessmentQuestions { get; set; } 
+        public DbSet<AssessmentQuestion> AssessmentQuestions { get; set; }
         public DbSet<CodingQuestion> CodingQuestions { get; set; }
         public DbSet<HrQuestion> HrQuestions { get; set; }
-        public DbSet<Interview>  Interviews { get; set; }
+        public DbSet<Interview> Interviews { get; set; }
         public DbSet<InterviewQuestion> InterviewQuestions { get; set; }
         public DbSet<QuestionTopic> QuestionTopics { get; set; }
-        public DbSet<CvJobAnalysis> CvJobs { get; set; }
+        public DbSet<CvJobAnalysis> CvJobAnalyses { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,11 +32,15 @@ namespace Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserCvConfiguration());
             modelBuilder.ApplyConfiguration(new UserSkillConfiguration());
+            modelBuilder.ApplyConfiguration(new UserExperienceConfiguration());
+            modelBuilder.ApplyConfiguration(new UserEducationConfiguration());
             modelBuilder.ApplyConfiguration(new SkillConfiguration());
             modelBuilder.ApplyConfiguration(new JobConfiguration());
             modelBuilder.ApplyConfiguration(new JobTrackConfiguration());
             modelBuilder.ApplyConfiguration(new JobSkillConfiguration());
+            modelBuilder.ApplyConfiguration(new ApplicationHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new AssessmentConfiguration());
             modelBuilder.ApplyConfiguration(new AssessmentQuestionConfiguration());
             modelBuilder.ApplyConfiguration(new InterviewConfiguration());
@@ -44,10 +49,6 @@ namespace Infrastructure.Data
             modelBuilder.ApplyConfiguration(new QuestionTopicConfiguration());
             modelBuilder.ApplyConfiguration(new HrQuestionConfiguration());
             modelBuilder.ApplyConfiguration(new CvJobAnalysisConfiguration());
-            modelBuilder.ApplyConfiguration(new UserCvConfiguration());
-            modelBuilder.ApplyConfiguration(new UserExperienceConfiguration());
-            modelBuilder.ApplyConfiguration(new UserEducationConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationHistoryConfiguration());
         }
     }
 }

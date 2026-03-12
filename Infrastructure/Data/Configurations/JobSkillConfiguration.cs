@@ -8,9 +8,14 @@ namespace Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<JobSkill> builder)
         {
-            builder.HasKey(js => new { js.JobId, js.SkillId });
+            builder.HasKey(js => new { js.JobTrackId, js.SkillId });
 
             builder.Property(js => js.RequiredLevel).IsRequired();
+
+            builder.HasOne(js => js.JobTrack)
+                .WithMany(jt => jt.SkillsRequired)
+                .HasForeignKey(js => js.JobTrackId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(js => js.Skill)
                 .WithMany(s => s.JobSkills)

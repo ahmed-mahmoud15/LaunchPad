@@ -1,5 +1,4 @@
 ﻿using Domain.Enums;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Domain.Entities
 {
@@ -22,7 +21,7 @@ namespace Domain.Entities
         public ICollection<UserCv> Cvs { get; set; } = new List<UserCv>();
         public ICollection<Assessment> Assessments { get; set; } = new List<Assessment>();
         public ICollection<Interview> Interviews { get; set; } = new List<Interview>();
-        public ICollection<JobTrack> AppliedJobs { get; set; } = new List<JobTrack>();
-        public ICollection<CvJobAnalysis> AnalysedJobs { get; set; } = new List<CvJobAnalysis>();
+        public ICollection<Job> Jobs { get; set; } = new List<Job>();
+        public ICollection<CvJobAnalysis> CvJobAnalyses { get; set; } = new List<CvJobAnalysis>();
     }
 }

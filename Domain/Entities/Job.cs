@@ -11,8 +11,9 @@ namespace Domain.Entities
         public string? Info { get; set; }
         public JobType Type { get; set; }
 
-
         public User User { get; set; }
         public UserCv Cv { get; set; }
+        public JobTrack? JobTrack { get; set; }
+        public ICollection<CvJobAnalysis> CvJobAnalyses { get; set; } = new List<CvJobAnalysis>();
     }
 }

@@ -19,6 +19,28 @@ namespace Application.Services
             this.unit = unit;
         }
 
+        public async Task<Result<IEnumerable<UserDto>>> GetAllAsync()
+        {
+            var users = await unit.Users.GetAllAsync();
+            IList<UserDto> result = new List<UserDto>();
+            foreach(var user in users)
+            {
+                var dto = new UserDto
+                {
+                    Address = user.Address,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Id = user.Id,
+                    JoinDate = user.JoinDate,
+                    PhoneNumber = user.PhoneNumber,
+                    Role = user.Role.ToString()
+                };
+                result.Add(dto);
+            }
+            return Result<IEnumerable<UserDto>>.Success(result);
+        }
+
         public async Task<Result<UserDto>> GetByIdAsync(int id)
         {
             var user = await unit.Users.GetByIdAsync(id);

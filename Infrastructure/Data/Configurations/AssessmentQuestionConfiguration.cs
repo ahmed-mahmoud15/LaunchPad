@@ -10,9 +10,15 @@ namespace Infrastructure.Data.Configurations
         {
             builder.HasKey(aq => aq.Id);
 
+            builder.Property(aq => aq.Status).IsRequired();
             builder.Property(aq => aq.CodeSubmitted);
             builder.Property(aq => aq.LanguageUsed).IsRequired().HasMaxLength(50);
-            builder.Property(aq => aq.Status).IsRequired();
+            builder.Property(aq => aq.SubmittedAt).IsRequired();
+
+            builder.HasOne(aq => aq.Assessment)
+                .WithMany(a => a.Questions)
+                .HasForeignKey(aq => aq.AssessmentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(aq => aq.Question)
                 .WithMany()

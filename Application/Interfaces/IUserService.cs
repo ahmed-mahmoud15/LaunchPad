@@ -11,5 +11,6 @@ namespace Application.Interfaces
     public interface IUserService
     {
         Task<Result<UserDto>> GetByIdAsync(int id);
+        Task<Result<IEnumerable<UserDto>>> GetAllAsync();
     }
 }

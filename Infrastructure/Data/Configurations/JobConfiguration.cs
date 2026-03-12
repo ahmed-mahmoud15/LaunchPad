@@ -17,14 +17,19 @@ namespace Infrastructure.Data.Configurations
             builder.Property(j => j.Type).IsRequired();
 
             builder.HasOne(j => j.User)
-                .WithMany(u => u.AppliedJobs)
-                .HasForeignKey(jt => jt.UserId)
+                .WithMany(u => u.Jobs)
+                .HasForeignKey(j => j.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(j => j.Cv)
-                .WithMany()
+                .WithMany(c => c.Jobs)
                 .HasForeignKey(j => j.CvId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(j => j.JobTrack)
+                .WithOne(jt => jt.Job)
+                .HasForeignKey<JobTrack>(jt => jt.JobId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

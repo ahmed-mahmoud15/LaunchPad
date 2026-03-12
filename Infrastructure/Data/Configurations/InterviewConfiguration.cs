@@ -11,7 +11,7 @@ namespace Infrastructure.Data.Configurations
             builder.HasKey(i => i.Id);
 
             builder.Property(i => i.StartedAt).IsRequired();
-            builder.Property(i => i.EndedAt).IsRequired();
+            builder.Property(i => i.EndedAt);
             builder.Property(i => i.Score).IsRequired();
 
             builder.HasOne(i => i.User)
@@ -21,6 +21,7 @@ namespace Infrastructure.Data.Configurations
 
             builder.HasMany(i => i.InterviewQuestions)
                 .WithOne(iq => iq.Interview)
+                .HasForeignKey(iq => iq.InterviewId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

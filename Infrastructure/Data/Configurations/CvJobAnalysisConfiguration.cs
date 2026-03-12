@@ -14,17 +14,17 @@ namespace Infrastructure.Data.Configurations
             builder.Property(c => c.Score).IsRequired();
 
             builder.HasOne(c => c.User)
-                .WithMany(u => u.AnalysedJobs)
+                .WithMany(u => u.CvJobAnalyses)
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(c => c.Cv)
-                .WithMany()
+                .WithMany(cv => cv.CvJobAnalyses)
                 .HasForeignKey(c => c.CvId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(c => c.Job)
-                .WithMany()
+                .WithMany(j => j.CvJobAnalyses)
                 .HasForeignKey(c => c.JobId)
                 .OnDelete(DeleteBehavior.NoAction);
         }

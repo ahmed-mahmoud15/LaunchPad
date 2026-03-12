@@ -17,5 +17,12 @@ namespace API.Controllers
             var result = await userService.GetByIdAsync(id);
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.ErrorMessage);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await userService.GetAllAsync();
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.ErrorMessage);
+        }
     }
 }
