@@ -9,10 +9,14 @@ namespace Application.DTOs.User
 {
     public class UpdateUserDto
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        [Phone]
-        public string? PhoneNumber { get; set; }
-        public string? Address { get; set; }
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        [RegularExpression(@"^\+?[1-9]\d{1,14}$")]
+        public string PhoneNumber { get; set; }
+        [Required]
+        public string Address { get; set; }
     }
 }

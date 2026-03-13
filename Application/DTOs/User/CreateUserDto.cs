@@ -21,8 +21,8 @@ namespace Application.DTOs.User
         [Required]
         [MinLength(8)]
         public string Password { get; set; }
-        [Phone]
         [Required]
+        [RegularExpression(@"^\+?[1-9]\d{1,14}$")]
         public string PhoneNumber { get; set; }
         [Required]
         public string Address { get; set; }

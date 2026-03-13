@@ -13,7 +13,7 @@ namespace Application.Interfaces
         Task<Result<UserDto>> GetByIdAsync(int id);
         Task<Result<IEnumerable<UserDto>>> GetAllAsync();
         Task<Result<UserDto>> CreateUserAsync(CreateUserDto dto);
-        Task<Result> UpdateUserAsync(UpdateUserDto dto);
+        Task<Result> UpdateUserAsync(int id, UpdateUserDto dto);
         Task<Result> DeleteUserAsync(int id);
     }
 }

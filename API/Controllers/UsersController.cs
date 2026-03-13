@@ -34,5 +34,28 @@ namespace API.Controllers
             var result =  await userService.CreateUserAsync(dto);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserDto dto)
+        {
+            var result = await userService.UpdateUserAsync(id, dto);
+            if (!result.IsSuccess) {
+                return NotFound(result.ErrorMessage);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await userService.DeleteUserAsync(id);
+            if (!result.IsSuccess)
+            {
+                return NotFound(result.ErrorMessage);
+            }
+
+            return NoContent();
+        }
     }
 }

@@ -57,9 +57,18 @@ namespace Application.Services
             return Result<UserDto>.Created(userDto);
         }
 
-        public Task<Result> DeleteUserAsync(int id)
+        public async Task<Result> DeleteUserAsync(int id)
         {
-            throw new NotImplementedException();
+            var userFromDb = await unit.Users.GetByIdAsync(id);
+            if (userFromDb is null)
+            {
+                return Result.NotFound("User with this id is not found");
+            }
+
+            await unit.Users.DeleteAsync(id);
+            await unit.SaveChangesAsync();
+
+            return Result.NoContent();
         }
 
         public async Task<Result<IEnumerable<UserDto>>> GetAllAsync()
@@ -105,9 +114,22 @@ namespace Application.Services
             return Result<UserDto>.Ok(dto);
         }
 
-        public Task<Result> UpdateUserAsync(UpdateUserDto dto)
+        public async Task<Result> UpdateUserAsync(int id, UpdateUserDto dto)
         {
-            throw new NotImplementedException();
+            var userFromDb = await unit.Users.GetByIdAsync(id);
+            if (userFromDb is null) {
+                return Result.NotFound("User with this id is not found");
+            }
+
+            userFromDb.FirstName = dto.FirstName;
+            userFromDb.LastName = dto.LastName;
+            userFromDb.PhoneNumber = dto.PhoneNumber;
+            userFromDb.Address = dto.Address;
+
+            await unit.Users.UpdateAsync(userFromDb);
+            await unit.SaveChangesAsync();
+
+            return Result.NoContent();
         }
     }
 }
