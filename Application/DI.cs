@@ -14,6 +14,7 @@ namespace Application
         public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
             return services;
         }
     }
