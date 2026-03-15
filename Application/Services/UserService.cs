@@ -20,42 +20,42 @@ namespace Application.Services
             this.unit = unit;
         }
 
-        public async Task<Result<UserDto>> CreateUserAsync(CreateUserDto dto)
-        {
-            var userFromDb = await unit.Users.FindAsync(u => u.Email == dto.Email);
+        //public async Task<Result<UserDto>> CreateUserAsync(CreateUserDto dto)
+        //{
+        //    var userFromDb = await unit.Users.FindAsync(u => u.Email == dto.Email);
             
-            if(userFromDb != null)
-            {
-                return Result<UserDto>.Conflict("User With This Email Already Exists!");
-            }
+        //    if(userFromDb != null)
+        //    {
+        //        return Result<UserDto>.Conflict("User With This Email Already Exists!");
+        //    }
 
-            var user = new User()
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.Email,
-                Address = dto.Address,
-                Role = UserRole.User,
-                JoinDate = DateOnly.FromDateTime(DateTime.UtcNow),
-                PasswordHashed = dto.Password,
-                PhoneNumber = dto.PhoneNumber,
-                IsActive = true
-            };
-            await unit.Users.AddAsync(user);
-            await unit.SaveChangesAsync();
+        //    var user = new User()
+        //    {
+        //        FirstName = dto.FirstName,
+        //        LastName = dto.LastName,
+        //        Email = dto.Email,
+        //        Address = dto.Address,
+        //        Role = UserRole.User,
+        //        JoinDate = DateOnly.FromDateTime(DateTime.UtcNow),
+        //        PasswordHashed = dto.Password,
+        //        PhoneNumber = dto.PhoneNumber,
+        //        IsActive = true
+        //    };
+        //    await unit.Users.AddAsync(user);
+        //    await unit.SaveChangesAsync();
 
-            var userDto = new UserDto() {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Address = user.Address,
-                PhoneNumber= user.PhoneNumber,
-                Id = user.Id,
-                JoinDate = user.JoinDate,
-                Role = user.Role.ToString()
-            };
-            return Result<UserDto>.Created(userDto);
-        }
+        //    var userDto = new UserDto() {
+        //        FirstName = user.FirstName,
+        //        LastName = user.LastName,
+        //        Email = user.Email,
+        //        Address = user.Address,
+        //        PhoneNumber= user.PhoneNumber,
+        //        Id = user.Id,
+        //        JoinDate = user.JoinDate,
+        //        Role = user.Role.ToString()
+        //    };
+        //    return Result<UserDto>.Created(userDto);
+        //}
 
         public async Task<Result> DeleteUserAsync(int id)
         {
