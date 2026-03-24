@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260324025252_AddSlugToCodingQuestion")]
+    partial class AddSlugToCodingQuestion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,9 +302,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("ExampleOutput")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LeetcodeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -317,9 +317,6 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeetcodeId")
-                        .IsUnique();
-
                     b.HasIndex("TopicId");
 
                     b.ToTable("CodingQuestions");
@@ -332,7 +329,6 @@ namespace Infrastructure.Data.Migrations
                             Difficulty = 1,
                             ExampleInput = "nums = [2,7,11,15], target = 9",
                             ExampleOutput = "[0,1]",
-                            LeetcodeId = 1,
                             Title = "Two Sum",
                             TitleSlug = "two-sum",
                             TopicId = 1
@@ -344,7 +340,6 @@ namespace Infrastructure.Data.Migrations
                             Difficulty = 1,
                             ExampleInput = "1 -> 2 -> 3 -> 4 -> 5",
                             ExampleOutput = "5 -> 4 -> 3 -> 2 -> 1",
-                            LeetcodeId = 206,
                             Title = "Reverse a Linked List",
                             TitleSlug = "reverse-linked-list",
                             TopicId = 2
@@ -356,7 +351,6 @@ namespace Infrastructure.Data.Migrations
                             Difficulty = 2,
                             ExampleInput = "[3,9,20,null,null,15,7]",
                             ExampleOutput = "[[3],[9,20],[15,7]]",
-                            LeetcodeId = 102,
                             Title = "Binary Tree Level Order Traversal",
                             TitleSlug = "binary-tree-level-order-traversal",
                             TopicId = 3
@@ -368,7 +362,6 @@ namespace Infrastructure.Data.Migrations
                             Difficulty = 2,
                             ExampleInput = "text1 = \"abcde\", text2 = \"ace\"",
                             ExampleOutput = "3",
-                            LeetcodeId = 11143,
                             Title = "Longest Common Subsequence",
                             TitleSlug = "longest-common-subsequence",
                             TopicId = 4
@@ -380,7 +373,6 @@ namespace Infrastructure.Data.Migrations
                             Difficulty = 3,
                             ExampleInput = "[[1,4,7],[2,5,8],[3,6,9]]",
                             ExampleOutput = "[1,2,3,4,5,6,7,8,9]",
-                            LeetcodeId = 23,
                             Title = "Merge K Sorted Arrays",
                             TitleSlug = "merge-k-sorted-lists",
                             TopicId = 5

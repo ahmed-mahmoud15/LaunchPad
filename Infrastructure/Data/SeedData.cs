@@ -79,6 +79,8 @@ namespace Infrastructure.Data
                     TopicId = 1,
                     Difficulty = QuestionDifficulty.Easy,
                     Title = "Two Sum",
+                    TitleSlug = "two-sum",
+                    LeetcodeId = 1,
                     Description = "Given an array of integers and a target, return the indices of two numbers that add up to the target.",
                     ExampleInput = "nums = [2,7,11,15], target = 9",
                     ExampleOutput = "[0,1]"
@@ -89,6 +91,8 @@ namespace Infrastructure.Data
                     TopicId = 2,
                     Difficulty = QuestionDifficulty.Easy,
                     Title = "Reverse a Linked List",
+                    TitleSlug = "reverse-linked-list",
+                    LeetcodeId = 206,
                     Description = "Reverse a singly linked list iteratively.",
                     ExampleInput = "1 -> 2 -> 3 -> 4 -> 5",
                     ExampleOutput = "5 -> 4 -> 3 -> 2 -> 1"
@@ -99,6 +103,8 @@ namespace Infrastructure.Data
                     TopicId = 3,
                     Difficulty = QuestionDifficulty.Medium,
                     Title = "Binary Tree Level Order Traversal",
+                    TitleSlug = "binary-tree-level-order-traversal",
+                    LeetcodeId = 102,
                     Description = "Return the level-order (BFS) traversal of a binary tree's node values as a list of lists.",
                     ExampleInput = "[3,9,20,null,null,15,7]",
                     ExampleOutput = "[[3],[9,20],[15,7]]"
@@ -109,6 +115,8 @@ namespace Infrastructure.Data
                     TopicId = 4,
                     Difficulty = QuestionDifficulty.Medium,
                     Title = "Longest Common Subsequence",
+                    TitleSlug = "longest-common-subsequence",
+                    LeetcodeId = 11143,
                     Description = "Given two strings, return the length of their longest common subsequence.",
                     ExampleInput = "text1 = \"abcde\", text2 = \"ace\"",
                     ExampleOutput = "3"
@@ -119,6 +127,8 @@ namespace Infrastructure.Data
                     TopicId = 5,
                     Difficulty = QuestionDifficulty.Hard,
                     Title = "Merge K Sorted Arrays",
+                    TitleSlug = "merge-k-sorted-lists",
+                    LeetcodeId = 23,
                     Description = "Merge k sorted arrays into one sorted array efficiently.",
                     ExampleInput = "[[1,4,7],[2,5,8],[3,6,9]]",
                     ExampleOutput = "[1,2,3,4,5,6,7,8,9]"

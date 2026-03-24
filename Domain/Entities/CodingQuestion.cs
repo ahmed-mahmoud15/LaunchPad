@@ -6,6 +6,8 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string TitleSlug { get; set; }
+        public int LeetcodeId { get; set; }
         public string Description { get; set; }
         public string? ExampleInput { get; set; }
         public string? ExampleOutput { get; set; }

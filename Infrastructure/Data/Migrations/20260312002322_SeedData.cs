@@ -77,14 +77,14 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "CodingQuestions",
-                columns: new[] { "Id", "Description", "Difficulty", "ExampleInput", "ExampleOutput", "Title", "TopicId" },
+                columns: new[] { "Id", "Description", "Difficulty", "ExampleInput", "ExampleOutput", "Title", "TitleSlug", "TopicId" },
                 values: new object[,]
                 {
-                    { 1, "Given an array of integers and a target, return the indices of two numbers that add up to the target.", 1, "nums = [2,7,11,15], target = 9", "[0,1]", "Two Sum", 1 },
-                    { 2, "Reverse a singly linked list iteratively.", 1, "1 -> 2 -> 3 -> 4 -> 5", "5 -> 4 -> 3 -> 2 -> 1", "Reverse a Linked List", 2 },
-                    { 3, "Return the level-order (BFS) traversal of a binary tree's node values as a list of lists.", 2, "[3,9,20,null,null,15,7]", "[[3],[9,20],[15,7]]", "Binary Tree Level Order Traversal", 3 },
-                    { 4, "Given two strings, return the length of their longest common subsequence.", 2, "text1 = \"abcde\", text2 = \"ace\"", "3", "Longest Common Subsequence", 4 },
-                    { 5, "Merge k sorted arrays into one sorted array efficiently.", 3, "[[1,4,7],[2,5,8],[3,6,9]]", "[1,2,3,4,5,6,7,8,9]", "Merge K Sorted Arrays", 5 }
+                    { 1, "Given an array of integers and a target, return the indices of two numbers that add up to the target.", 1, "nums = [2,7,11,15], target = 9", "[0,1]", "Two Sum", "two-sum", 1 },
+                    { 2, "Reverse a singly linked list iteratively.", 1, "1 -> 2 -> 3 -> 4 -> 5", "5 -> 4 -> 3 -> 2 -> 1", "Reverse a Linked List", "reverse-linked-list", 2 },
+                    { 3, "Return the level-order (BFS) traversal of a binary tree's node values as a list of lists.", 2, "[3,9,20,null,null,15,7]", "[[3],[9,20],[15,7]]", "Binary Tree Level Order Traversal", "binary-tree-level-order-traversal", 3 },
+                    { 4, "Given two strings, return the length of their longest common subsequence.", 2, "text1 = \"abcde\", text2 = \"ace\"", "3", "Longest Common Subsequence", "longest-common-subsequence", 4 },
+                    { 5, "Merge k sorted arrays into one sorted array efficiently.", 3, "[[1,4,7],[2,5,8],[3,6,9]]", "[1,2,3,4,5,6,7,8,9]", "Merge K Sorted Arrays", "merge-k-sorted-lists", 5 }
                 });
 
             migrationBuilder.InsertData(

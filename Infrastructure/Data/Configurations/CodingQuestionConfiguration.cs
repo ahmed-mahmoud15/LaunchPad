@@ -11,8 +11,12 @@ namespace Infrastructure.Data.Configurations
             builder.HasKey(q => q.Id);
 
             builder.Property(q => q.Title).IsRequired().HasMaxLength(300);
+            builder.Property(q => q.TitleSlug).IsRequired().HasMaxLength(300);
+            builder.Property(q => q.LeetcodeId).IsRequired();
             builder.Property(q => q.Description).IsRequired();
             builder.Property(q => q.Difficulty).IsRequired();
+
+            builder.HasIndex(q => q.LeetcodeId).IsUnique();
 
             builder.HasOne(q => q.Topic)
                 .WithMany(t => t.Questions)
