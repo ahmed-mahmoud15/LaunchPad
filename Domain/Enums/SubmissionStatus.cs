@@ -11,6 +11,7 @@ namespace Domain.Enums
         NotAttempted = 1,
         Accepted,
         WrongAnswer,
-        TimeLimitExceeded
+        TimeLimitExceeded,
+        Error
     }
 }

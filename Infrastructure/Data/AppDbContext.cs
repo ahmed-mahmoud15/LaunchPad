@@ -24,6 +24,9 @@ namespace Infrastructure.Data
         public DbSet<InterviewQuestion> InterviewQuestions { get; set; }
         public DbSet<QuestionTopic> QuestionTopics { get; set; }
         public DbSet<CvJobAnalysis> CvJobAnalyses { get; set; }
+        public DbSet<CodingQuestionTopic> CodingQuestionTopics { get; set; }
+
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -49,6 +52,7 @@ namespace Infrastructure.Data
             modelBuilder.ApplyConfiguration(new QuestionTopicConfiguration());
             modelBuilder.ApplyConfiguration(new HrQuestionConfiguration());
             modelBuilder.ApplyConfiguration(new CvJobAnalysisConfiguration());
+            modelBuilder.ApplyConfiguration(new CodingQuestionTopicConfiguration());
 
 
 

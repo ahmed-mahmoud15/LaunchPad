@@ -11,9 +11,13 @@ namespace Application.DTOs.Assessment_Engine
     public class ProblemDto
     {
         [JsonPropertyName("questionId")]
-        public int QuestionId { get; set; }
-        [JsonPropertyName("questionFrontendId")]
-        public int FrontEndQuestionId { get; set; }
+        public string QuestionId { get; set; }
+
+
+        //from db
+        public int AssessmentQuestionId { get; set; }
+
+
         [JsonPropertyName("title")]
         public string Title { get; set; }
         [JsonPropertyName("titleSlug")]
@@ -25,9 +29,10 @@ namespace Application.DTOs.Assessment_Engine
         [JsonPropertyName("exampleTestcases")]
         public string TestCases { get; set; }
 
-        public IEnumerable<string> Tags { get; set; } = new List<string>();
 
-        public int SolutionId { get; set; }
+        [JsonPropertyName("topicTags")]
+        public IEnumerable<TopicTagDto> TopicTags { get; set; }
+
         [JsonPropertyName("hints")]
         public IEnumerable<string> Hints { get; set; } = new List<string>();
 

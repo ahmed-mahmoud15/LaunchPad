@@ -26,6 +26,7 @@ namespace Infrastructure.Repositories
         private IRepository<Interview>? _interviews;
         private IRepository<InterviewQuestion>? _interviewQuestions;
         private IRepository<CvJobAnalysis>? _cvJobAnalyses;
+        private IRepository<CodingQuestionTopic>? _codingQuestionTopics;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -85,6 +86,9 @@ namespace Infrastructure.Repositories
 
         public IRepository<CvJobAnalysis> CvJobAnalyses =>
             _cvJobAnalyses ??= new Repository<CvJobAnalysis>(_context);
+
+        public IRepository<CodingQuestionTopic> CodingQuestionTopics =>
+            _codingQuestionTopics ??= new Repository<CodingQuestionTopic>(_context);
 
         public async Task<int> SaveChangesAsync()
         {

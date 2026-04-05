@@ -30,12 +30,12 @@ namespace Infrastructure.Data
 
             // ── QuestionTopics ────────────────────────────────────────────────────
             modelBuilder.Entity<QuestionTopic>().HasData(
-                new QuestionTopic { Id = 1, Name = "Arrays & Strings" },
-                new QuestionTopic { Id = 2, Name = "Linked Lists" },
-                new QuestionTopic { Id = 3, Name = "Trees & Graphs" },
-                new QuestionTopic { Id = 4, Name = "Dynamic Programming" },
-                new QuestionTopic { Id = 5, Name = "Sorting & Searching" }
-            );
+    new QuestionTopic { Id = 1, Name = "Arrays & Strings", Slug = "arrays-and-strings" },
+    new QuestionTopic { Id = 2, Name = "Linked Lists", Slug = "linked-list" },
+    new QuestionTopic { Id = 3, Name = "Trees & Graphs", Slug = "tree" },
+    new QuestionTopic { Id = 4, Name = "Dynamic Programming", Slug = "dynamic-programming" },
+    new QuestionTopic { Id = 5, Name = "Sorting & Searching", Slug = "sorting" }
+);
 
             // ── HrQuestions ───────────────────────────────────────────────────────
             modelBuilder.Entity<HrQuestion>().HasData(
@@ -76,7 +76,6 @@ namespace Infrastructure.Data
                 new CodingQuestion
                 {
                     Id = 1,
-                    TopicId = 1,
                     Difficulty = QuestionDifficulty.Easy,
                     Title = "Two Sum",
                     TitleSlug = "two-sum",
@@ -88,7 +87,6 @@ namespace Infrastructure.Data
                 new CodingQuestion
                 {
                     Id = 2,
-                    TopicId = 2,
                     Difficulty = QuestionDifficulty.Easy,
                     Title = "Reverse a Linked List",
                     TitleSlug = "reverse-linked-list",
@@ -100,7 +98,6 @@ namespace Infrastructure.Data
                 new CodingQuestion
                 {
                     Id = 3,
-                    TopicId = 3,
                     Difficulty = QuestionDifficulty.Medium,
                     Title = "Binary Tree Level Order Traversal",
                     TitleSlug = "binary-tree-level-order-traversal",
@@ -112,7 +109,6 @@ namespace Infrastructure.Data
                 new CodingQuestion
                 {
                     Id = 4,
-                    TopicId = 4,
                     Difficulty = QuestionDifficulty.Medium,
                     Title = "Longest Common Subsequence",
                     TitleSlug = "longest-common-subsequence",
@@ -124,7 +120,6 @@ namespace Infrastructure.Data
                 new CodingQuestion
                 {
                     Id = 5,
-                    TopicId = 5,
                     Difficulty = QuestionDifficulty.Hard,
                     Title = "Merge K Sorted Arrays",
                     TitleSlug = "merge-k-sorted-lists",
@@ -134,6 +129,14 @@ namespace Infrastructure.Data
                     ExampleOutput = "[1,2,3,4,5,6,7,8,9]"
                 }
             );
+
+            modelBuilder.Entity<CodingQuestionTopic>().HasData(
+    new CodingQuestionTopic { CodingQuestionId = 1, QuestionTopicId = 1 },
+    new CodingQuestionTopic { CodingQuestionId = 2, QuestionTopicId = 2 },
+    new CodingQuestionTopic { CodingQuestionId = 3, QuestionTopicId = 3 },
+    new CodingQuestionTopic { CodingQuestionId = 4, QuestionTopicId = 4 },
+    new CodingQuestionTopic { CodingQuestionId = 5, QuestionTopicId = 5 }
+);
 
             // ── Users ─────────────────────────────────────────────────────────────
             // PasswordHashed values below are BCrypt hashes of "Password123!"

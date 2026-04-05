@@ -22,6 +22,7 @@ namespace Domain.Interfaces
         IRepository<Interview> Interviews { get; }
         IRepository<InterviewQuestion> InterviewQuestions { get; }
         IRepository<CvJobAnalysis> CvJobAnalyses { get; }
+        IRepository<CodingQuestionTopic> CodingQuestionTopics { get; }
 
         Task<int> SaveChangesAsync();
     }

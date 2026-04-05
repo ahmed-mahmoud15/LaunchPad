@@ -9,11 +9,9 @@ namespace Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<QuestionTopic> builder)
         {
             builder.HasKey(t => t.Id);
-
             builder.Property(t => t.Name).IsRequired().HasMaxLength(100);
-            builder.HasIndex(t => t.Name).IsUnique();
-
-            builder.Ignore(t => t.NameNormalized);
+            builder.Property(t => t.Slug).IsRequired().HasMaxLength(100);
+            builder.HasIndex(t => t.Slug).IsUnique();
         }
     }
 }

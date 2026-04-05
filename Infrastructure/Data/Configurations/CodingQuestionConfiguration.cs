@@ -17,11 +17,6 @@ namespace Infrastructure.Data.Configurations
             builder.Property(q => q.Difficulty).IsRequired();
 
             builder.HasIndex(q => q.LeetcodeId).IsUnique();
-
-            builder.HasOne(q => q.Topic)
-                .WithMany(t => t.Questions)
-                .HasForeignKey(q => q.TopicId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

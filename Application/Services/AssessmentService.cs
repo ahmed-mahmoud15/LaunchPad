@@ -42,7 +42,8 @@ namespace Application.Services
 
                 foreach (var problem in problems)
                 {
-                    var codingQuest = await unit.CodingQuestions.FindAsync(q => q.LeetcodeId == problem.QuestionId);
+                    var codingQuest = await unit.CodingQuestions.FindAsync(q => q.LeetcodeId == int.Parse(problem.QuestionId));
+
                     if(codingQuest is null)
                     {
                         codingQuest = new CodingQuestion()
@@ -50,7 +51,7 @@ namespace Application.Services
                             Description = problem.Description,
                             Title = problem.Title,
                             TitleSlug = problem.TitleSlug,
-                            LeetcodeId = problem.QuestionId,
+                            LeetcodeId = int.Parse(problem.QuestionId),
                             Difficulty = problem.Difficulty.ToLower() switch
                             {
                                 "easy" => QuestionDifficulty.Easy,
@@ -60,18 +61,47 @@ namespace Application.Services
                             }
 
                         };
+
+                        foreach (var tag in problem.TopicTags)
+                        {
+                            var topic = await unit.QuestionTopics
+                                .FindAsync(t => t.Slug == tag.Slug);
+
+                            if (topic is null)
+                            {
+                                topic = new QuestionTopic
+                                {
+                                    Name = tag.Name,
+                                    Slug = tag.Slug
+                                };
+                            }
+
+                            codingQuest.CodingQuestionTopics.Add(new CodingQuestionTopic
+                            {
+                                CodingQuestion = codingQuest,
+                                QuestionTopic = topic
+                            });
+                        }
                     }
                     
                     AssessmentQuestion question = new AssessmentQuestion() {
                         Assessment = assesment,
                         Question = codingQuest,
-                        Status = SubmissionStatus.NotAttempted
+                        Status = SubmissionStatus.NotAttempted,
+                        LanguageUsed = string.Empty
                     };
+                    
+
                     assesment.Questions.Add(question);
                 }
 
                 await unit.Assessments.AddAsync(assesment);
                 await unit.SaveChangesAsync();
+
+                foreach(var problem in problems)
+                {
+                    problem.AssessmentQuestionId = assesment.Questions.First(q => q.Question.LeetcodeId == int.Parse(problem.QuestionId)).Id;
+                }
 
                 return Result<IEnumerable<ProblemDto>>.Ok(problems);
             }catch (Exception e)
@@ -115,9 +145,15 @@ namespace Application.Services
                 return Result<SubmitResponseDto>.ServerError($"Assessment Engine server is not reachable: {ex.Message}");
             }
 
-            assessmentQuestion.Status = response.Status;
-            assessmentQuestion.CodeSubmitted = request.typedCode;
-            assessmentQuestion.LanguageUsed = request.lang;
+            assessmentQuestion.Status = response.Status switch
+            {
+                "Accepted" => SubmissionStatus.Accepted,
+                "Wrong Answer" => SubmissionStatus.WrongAnswer,
+                "Internal Error" => SubmissionStatus.Error,
+                _ => SubmissionStatus.Error
+            };
+            assessmentQuestion.CodeSubmitted = request.Code;
+            assessmentQuestion.LanguageUsed = response.Language;
             assessmentQuestion.SubmittedAt = DateTime.UtcNow;
 
             await unit.AssessmentQuestions.UpdateAsync(assessmentQuestion);

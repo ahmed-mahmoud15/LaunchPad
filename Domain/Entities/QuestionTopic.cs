@@ -10,12 +10,9 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string NameNormalized { get
-            {
-                return Name.ToUpper();
-            }
-        }
+        public string Slug { get; set; }
+        
 
-        public ICollection<CodingQuestion> Questions { get; set; } = new List<CodingQuestion>();
+        public ICollection<CodingQuestionTopic> CodingQuestionTopics { get; set; } = new List<CodingQuestionTopic>();
     }
 }
