@@ -71,11 +71,11 @@ namespace Application.Services
             return Result.NoContent();
         }
 
-        public async Task<Result<IEnumerable<UserDto>>> GetAllAsync()
+        public async Task<Result<PagedResponse<UserDto>>> GetAllAsync(PagedRequest request)
         {
-            var users = await unit.Users.GetAllAsync();
-            IList<UserDto> result = new List<UserDto>();
-            foreach(var user in users)
+            var pagedUsers = await unit.Users.GetAllPaginated(request);
+            IList<UserDto> data = new List<UserDto>();
+            foreach(var user in pagedUsers.Items)
             {
                 var dto = new UserDto
                 {
@@ -88,9 +88,17 @@ namespace Application.Services
                     PhoneNumber = user.PhoneNumber,
                     Role = user.Role.ToString()
                 };
-                result.Add(dto);
+                data.Add(dto);
             }
-            return Result<IEnumerable<UserDto>>.Ok(result);
+
+            PagedResponse<UserDto> result = new PagedResponse<UserDto>() {
+                Items = data,
+                PageNumber = pagedUsers.PageNumber,
+                PageSize = pagedUsers.PageSize,
+                TotalCount = pagedUsers.TotalCount
+            };
+            
+            return Result<PagedResponse<UserDto>>.Ok(result);
         }
 
         public async Task<Result<UserDto>> GetByIdAsync(int id)

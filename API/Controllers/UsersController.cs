@@ -1,6 +1,7 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Application.DTOs.User;
 using Application.Interfaces;
+using Domain.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -25,9 +26,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PagedRequest request)
         {
-            var result = await userService.GetAllAsync();
+            var result = await userService.GetAllAsync(request);
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.ErrorMessage);
         }
 

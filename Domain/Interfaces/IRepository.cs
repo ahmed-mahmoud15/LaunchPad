@@ -4,12 +4,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Common;
 
 namespace Domain.Interfaces
 {
     public interface IRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync();
+        Task<PagedResponse<T>> GetAllPaginated(PagedRequest request);
         Task<T?> GetByIdAsync(int id);
         Task AddAsync(T item);
         Task UpdateAsync(T item);

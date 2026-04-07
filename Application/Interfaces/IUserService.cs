@@ -11,7 +11,7 @@ namespace Application.Interfaces
     public interface IUserService
     {
         Task<Result<UserDto>> GetByIdAsync(int id);
-        Task<Result<IEnumerable<UserDto>>> GetAllAsync();
+        Task<Result<PagedResponse<UserDto>>> GetAllAsync(PagedRequest request);
         //Task<Result<UserDto>> CreateUserAsync(CreateUserDto dto);
         Task<Result> UpdateUserAsync(int id, UpdateUserDto dto);
         Task<Result> DeleteUserAsync(int id);

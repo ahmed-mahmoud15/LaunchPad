@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Common;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,23 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await set.ToListAsync();
+        }
+
+        public async Task<PagedResponse<T>> GetAllPaginated(PagedRequest request)
+        {
+            var query = set.AsQueryable();
+            int totalCount = await query.CountAsync();
+
+            var items = await query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+
+            return new PagedResponse<T>()
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
+
         }
 
         public async Task<T?> GetByIdAsync(int id)
