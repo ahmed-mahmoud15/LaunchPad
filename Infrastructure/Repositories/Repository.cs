@@ -41,6 +41,22 @@ namespace Infrastructure.Repositories
             return await set.Where(predicate).ToListAsync();
         }
 
+        public async Task<PagedResponse<T>> FindAllPaginatedAsync(PagedRequest request, Expression<Func<T, bool>> predicate)
+        {
+            var query = set.AsQueryable();
+            int totalCount = await query.CountAsync();
+
+            var items = await query.Where(predicate).Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+
+            return new PagedResponse<T>()
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
+        }
+
         public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await set.FirstOrDefaultAsync(predicate);

@@ -24,7 +24,7 @@ namespace Application.Services
             this.unit = unit;
         }
 
-        public async Task<Result<IEnumerable<ProblemDto>>> GetProblemsAsync(int userId, int easyCount, int mediumCount, int hardCount)
+        public async Task<Result<StartAssessmentDto>> StartAssessmentAsync(int userId, int easyCount, int mediumCount, int hardCount)
         {
             try {
                 var problems = await client.ListAsync(easyCount: easyCount, mediumCount: mediumCount, hardCount: hardCount);
@@ -103,10 +103,16 @@ namespace Application.Services
                     problem.AssessmentQuestionId = assesment.Questions.First(q => q.Question.LeetcodeId == int.Parse(problem.QuestionId)).Id;
                 }
 
-                return Result<IEnumerable<ProblemDto>>.Ok(problems);
+                var startDto = new StartAssessmentDto
+                {
+                    Problems = problems,
+                    AssessmentId = assesment.Id
+                };
+
+                return Result<StartAssessmentDto>.Ok(startDto);
             }catch (Exception e)
             {
-                return Result<IEnumerable<ProblemDto>>.ServerError($"Failed to Connect with Assessment Engine Server: {e.Message}");
+                return Result<StartAssessmentDto>.ServerError($"Failed to Connect with Assessment Engine Server: {e.Message}");
             }
         }
 

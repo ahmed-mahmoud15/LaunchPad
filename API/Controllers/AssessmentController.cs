@@ -23,7 +23,7 @@ namespace API.Controllers
             [FromQuery] int mediumCount,
             [FromQuery] int hardCount)
         {
-            var result = await service.GetProblemsAsync(userId: CurrentUserId, easyCount: easyCount, mediumCount: mediumCount, hardCount: hardCount);
+            var result = await service.StartAssessmentAsync(userId: CurrentUserId, easyCount: easyCount, mediumCount: mediumCount, hardCount: hardCount);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
 

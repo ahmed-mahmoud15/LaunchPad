@@ -122,6 +122,26 @@ namespace Application.Services
             return Result<UserDto>.Ok(dto);
         }
 
+        public async Task<Result<UserProfileDto>> GetUserProfileAsync(int id)
+        {
+            var user = await unit.Users.GetByIdAsync(id);
+
+            if(user is null)
+            {
+                return Result<UserProfileDto>.NotFound("User Not Found");
+            }
+
+            var result = new UserProfileDto
+            {
+                Id = id,
+                FullName = $"{user.FirstName} {user.LastName}",
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Address = user.Address
+            };
+            return Result<UserProfileDto>.Ok(result);
+        }
+
         public async Task<Result> UpdateUserAsync(int id, UpdateUserDto dto)
         {
             var userFromDb = await unit.Users.GetByIdAsync(id);

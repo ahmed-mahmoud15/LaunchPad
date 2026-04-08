@@ -18,6 +18,7 @@ namespace Domain.Interfaces
         Task DeleteAsync(int id);
 
         Task<T?> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<PagedResponse<T>> FindAllPaginatedAsync(PagedRequest request, Expression<Func<T, bool>> predicate);
         Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate);
     }
 }

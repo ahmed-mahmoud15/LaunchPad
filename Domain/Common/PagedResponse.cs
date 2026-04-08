@@ -8,10 +8,12 @@ namespace Domain.Common
 {
     public class PagedResponse<T>
     {
-        public IEnumerable<T> Items { get; set; } = new List<T>();
+        public IList<T> Items { get; set; } = new List<T>();
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
         public int TotalPages => (int) Math.Ceiling(TotalCount * 1.0 / PageSize);
+        public bool HasPrevious => PageNumber > 1;
+        public bool HasNext => PageNumber < TotalCount;
     }
 }

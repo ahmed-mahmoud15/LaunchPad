@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.DTOs.Cv
+{
+    public class CvAnalysisDto
+    {
+        public int Id { get; set; }
+        public string CvFileName { get; set; }
+        public string Feedback { get; set; }
+        public int Score { get; set; }
+    }
+}

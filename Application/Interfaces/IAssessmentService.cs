@@ -10,7 +10,8 @@ namespace Application.Interfaces
 {
     public interface IAssessmentService
     {
-        Task<Result<IEnumerable<ProblemDto>>> GetProblemsAsync(int userId, int easyCount, int mediumCount, int hardCount);
+        Task<Result<StartAssessmentDto>> StartAssessmentAsync(int userId, int easyCount, int mediumCount, int hardCount);
         Task<Result<SubmitResponseDto>> SubmitProblemAsync(SubmitRequestDto request, int userId, int assessmentQuestionId);
+        
     }
 }
