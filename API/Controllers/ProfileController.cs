@@ -23,7 +23,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetRecentActivity(int id)
         {
             if (CurrentUserId != id) {
-                return Forbid("You Can't Access this content");
+                return Unauthorized("You Can't Access this content");
             }
             var result = await profileService.GetRecentActivitesAsync(id);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
@@ -36,7 +36,7 @@ namespace API.Controllers
         {
             if (CurrentUserId != id)
             {
-                return Forbid("You Can't Access this content");
+                return Unauthorized("You Can't Access this content");
             }
             var result = await profileService.GetJobTracksAsync(id, request);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
@@ -48,7 +48,7 @@ namespace API.Controllers
         {
             if (CurrentUserId != id)
             {
-                return Forbid("You Can't Access this content");
+                return Unauthorized("You Can't Access this content");
             }
             var result = await profileService.GetAssessmentsAsync(id, request);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
@@ -60,7 +60,7 @@ namespace API.Controllers
         {
             if (CurrentUserId != id)
             {
-                return Forbid("You Can't Access this content");
+                return Unauthorized("You Can't Access this content");
             }
             var result = await profileService.GetInterviewsAsync(id, request);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
@@ -72,7 +72,7 @@ namespace API.Controllers
         {
             if (CurrentUserId != id)
             {
-                return Forbid("You Can't Access this content");
+                return Unauthorized("You Can't Access this content");
             }
             var result = await profileService.GetCvAnalysesAsync(id, request);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
