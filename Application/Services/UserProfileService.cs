@@ -134,7 +134,7 @@ namespace Application.Services
                 return Result<PagedResponse<JobTrackDto>>.NotFound("User Not Found");
             }
 
-            var jobs = await unit.JobTracks.FindAllPaginatedAsync(request, a => a.Job.UserId == userId);
+            var jobs = await unit.JobTracks.GetJobTracksForUserPaginatedAsync(userId, request);
 
             var result = new PagedResponse<JobTrackDto>()
             {

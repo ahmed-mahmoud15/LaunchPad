@@ -43,10 +43,10 @@ namespace Infrastructure.Repositories
 
         public async Task<PagedResponse<T>> FindAllPaginatedAsync(PagedRequest request, Expression<Func<T, bool>> predicate)
         {
-            var query = set.AsQueryable();
+            var query = set.Where(predicate);
             int totalCount = await query.CountAsync();
 
-            var items = await query.Where(predicate).Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+            var items = await query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
 
             return new PagedResponse<T>()
             {

@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
         private IRepository<UserSkill>? _userSkills;
         private IRepository<Skill>? _skills;
         private IRepository<Job>? _jobs;
-        private IRepository<JobTrack>? _jobTracks;
+        private IJobTrackRepository? _jobTracks;
         private IRepository<JobSkill>? _jobSkills;
         private IRepository<ApplicationHistory>? _applicationHistory;
         private IRepository<Assessment>? _assessments;
@@ -54,8 +54,8 @@ namespace Infrastructure.Repositories
         public IRepository<Job> Jobs =>
             _jobs ??= new Repository<Job>(_context);
 
-        public IRepository<JobTrack> JobTracks =>
-            _jobTracks ??= new Repository<JobTrack>(_context);
+        public IJobTrackRepository JobTracks =>
+            _jobTracks ??= new JobTrackRepository(_context);
 
         public IRepository<JobSkill> JobSkills =>
             _jobSkills ??= new Repository<JobSkill>(_context);
