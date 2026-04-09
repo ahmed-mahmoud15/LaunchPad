@@ -11,6 +11,8 @@ using Application.DTOs.Job_Tracker;
 using Application.DTOs.User;
 using Application.Interfaces;
 using Domain.Common;
+using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 
 namespace Application.Services
@@ -57,19 +59,107 @@ namespace Application.Services
             return Result<PagedResponse<AssessmentSummaryDto>>.Ok(result);
         }
 
-        public Task<Result<PagedResponse<CvAnalysisDto>>> GetCvAnalysesAsync(int userId, PagedRequest request)
+        public async Task<Result<PagedResponse<CvAnalysisDto>>> GetCvAnalysesAsync(int userId, PagedRequest request)
         {
-            throw new NotImplementedException();
+            var user = await unit.Users.GetByIdAsync(userId);
+
+            if (user is null)
+            {
+                return Result<PagedResponse<CvAnalysisDto>>.NotFound("User Not Found");
+            }
+
+            var cvs = await unit.CvJobAnalyses.FindAllPaginatedAsync(request, a => a.UserId == userId);
+
+            var result = new PagedResponse<CvAnalysisDto>()
+            {
+                PageNumber = cvs.PageNumber,
+                PageSize = cvs.PageSize,
+                TotalCount = cvs.TotalCount
+            };
+
+            foreach (var item in cvs.Items)
+            {
+                var dto = new CvAnalysisDto()
+                {
+                    Id = item.Id,
+                    Score = item.Score,
+                    Feedback = item.Feedback
+                };
+                result.Items.Add(dto);
+            }
+
+            return Result<PagedResponse<CvAnalysisDto>>.Ok(result);
         }
 
-        public Task<Result<PagedResponse<InterviewSummaryDto>>> GetInterviewsAsync(int userId, PagedRequest request)
+        public async Task<Result<PagedResponse<InterviewSummaryDto>>> GetInterviewsAsync(int userId, PagedRequest request)
         {
-            throw new NotImplementedException();
+            var user = await unit.Users.GetByIdAsync(userId);
+
+            if (user is null)
+            {
+                return Result<PagedResponse<InterviewSummaryDto>>.NotFound("User Not Found");
+            }
+
+            var interviews = await unit.Interviews.FindAllPaginatedAsync(request, a => a.UserId == userId);
+
+            var result = new PagedResponse<InterviewSummaryDto>()
+            {
+                PageNumber = interviews.PageNumber,
+                PageSize = interviews.PageSize,
+                TotalCount = interviews.TotalCount
+            };
+
+            foreach (var item in interviews.Items)
+            {
+                var dto = new InterviewSummaryDto()
+                {
+                    Id = item.Id,
+                    Score = item.Score,
+                    StartedAt = item.StartedAt,
+                    EndedAt = item.EndedAt ,
+                };
+                result.Items.Add(dto);
+            }
+
+            return Result<PagedResponse<InterviewSummaryDto>>.Ok(result);
         }
 
-        public Task<Result<PagedResponse<JobTrackDto>>> GetJobTracksAsync(int userId, PagedRequest request)
+        // lazy loading vs eager loading??
+        public async Task<Result<PagedResponse<JobTrackDto>>> GetJobTracksAsync(int userId, PagedRequest request)
         {
-            throw new NotImplementedException();
+            var user = await unit.Users.GetByIdAsync(userId);
+
+            if (user is null)
+            {
+                return Result<PagedResponse<JobTrackDto>>.NotFound("User Not Found");
+            }
+
+            var jobs = await unit.JobTracks.FindAllPaginatedAsync(request, a => a.Job.UserId == userId);
+
+            var result = new PagedResponse<JobTrackDto>()
+            {
+                PageNumber = jobs.PageNumber,
+                PageSize = jobs.PageSize,
+                TotalCount = jobs.TotalCount
+            };
+
+            foreach (var item in jobs.Items)
+            {
+                var dto = new JobTrackDto()
+                {
+                    Id = item.Id,
+                    CompanyName = item.CompanyName,
+                    AppliedDate = item.AppliedAt,
+                    JobDescription = item.Job.Info,
+                    JobTitle = item.Job.Title,
+                    JobType = item.Job.Type.ToString(),
+                    Location = item.Location,
+                    Status = item.CurrentStatus.ToString()
+                };
+                result.Items.Add(dto);
+            }
+
+            return Result<PagedResponse<JobTrackDto>>.Ok(result);
         }
 
         public Task<Result<IEnumerable<UserActivityDto>>> GetRecentActivitesAsync(int userId)

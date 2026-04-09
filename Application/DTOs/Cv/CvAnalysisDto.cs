@@ -9,7 +9,6 @@ namespace Application.DTOs.Cv
     public class CvAnalysisDto
     {
         public int Id { get; set; }
-        public string CvFileName { get; set; }
         public string Feedback { get; set; }
         public int Score { get; set; }
     }

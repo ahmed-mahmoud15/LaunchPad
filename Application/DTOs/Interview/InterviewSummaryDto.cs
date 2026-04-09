@@ -11,7 +11,7 @@ namespace Application.DTOs.Interview
         public int Id { get; set; }
         public int Score { get; set; }
         public DateTime StartedAt { get; set; }
-        public DateTime EndedAt { get; set; }
+        public DateTime? EndedAt { get; set; }
 
     }
 }
