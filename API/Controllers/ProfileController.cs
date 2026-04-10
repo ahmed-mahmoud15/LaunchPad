@@ -22,7 +22,7 @@ namespace API.Controllers
         [HttpGet("{id:int}/activity")]
         public async Task<IActionResult> GetRecentActivity(int id)
         {
-            if (CurrentUserId != id) {
+            if (CurrentUserId != id && Role != "Admin") {
                 return Unauthorized("You Can't Access this content");
             }
             var result = await profileService.GetRecentActivitesAsync(id);
@@ -34,7 +34,7 @@ namespace API.Controllers
         [HttpGet("{id:int}/job-tracks")]
         public async Task<IActionResult> GetJobTracks(int id, [FromQuery] PagedRequest request)
         {
-            if (CurrentUserId != id)
+            if (CurrentUserId != id && Role != "Admin")
             {
                 return Unauthorized("You Can't Access this content");
             }
@@ -46,7 +46,7 @@ namespace API.Controllers
         [HttpGet("{id:int}/assessments")]
         public async Task<IActionResult> GetAssessments(int id, [FromQuery] PagedRequest request)
         {
-            if (CurrentUserId != id)
+            if (CurrentUserId != id && Role != "Admin")
             {
                 return Unauthorized("You Can't Access this content");
             }
@@ -58,7 +58,7 @@ namespace API.Controllers
         [HttpGet("{id:int}/interviews")]
         public async Task<IActionResult> GetInterviews(int id, [FromQuery] PagedRequest request)
         {
-            if (CurrentUserId != id)
+            if (CurrentUserId != id && Role != "Admin")
             {
                 return Unauthorized("You Can't Access this content");
             }
@@ -70,7 +70,7 @@ namespace API.Controllers
         [HttpGet("{id:int}/cv-analyses")]
         public async Task<IActionResult> GetCvAnalyses(int id, [FromQuery] PagedRequest request)
         {
-            if (CurrentUserId != id)
+            if (CurrentUserId != id && Role != "Admin")
             {
                 return Unauthorized("You Can't Access this content");
             }

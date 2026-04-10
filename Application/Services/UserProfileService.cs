@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Assessment_Engine;
@@ -93,12 +92,12 @@ namespace Application.Services
 
         public async Task<Result<PagedResponse<InterviewSummaryDto>>> GetInterviewsAsync(int userId, PagedRequest request)
         {
-            var user = await unit.Users.GetByIdAsync(userId);
+            //var user = await unit.Users.GetByIdAsync(userId);
 
-            if (user is null)
-            {
-                return Result<PagedResponse<InterviewSummaryDto>>.NotFound("User Not Found");
-            }
+            //if (user is null)
+            //{
+            //    return Result<PagedResponse<InterviewSummaryDto>>.NotFound("User Not Found");
+            //}
 
             var interviews = await unit.Interviews.FindAllPaginatedAsync(request, a => a.UserId == userId);
 
@@ -124,15 +123,14 @@ namespace Application.Services
             return Result<PagedResponse<InterviewSummaryDto>>.Ok(result);
         }
 
-        // lazy loading vs eager loading??
         public async Task<Result<PagedResponse<JobTrackDto>>> GetJobTracksAsync(int userId, PagedRequest request)
         {
-            var user = await unit.Users.GetByIdAsync(userId);
+            //var user = await unit.Users.GetByIdAsync(userId);
 
-            if (user is null)
-            {
-                return Result<PagedResponse<JobTrackDto>>.NotFound("User Not Found");
-            }
+            //if (user is null)
+            //{
+            //    return Result<PagedResponse<JobTrackDto>>.NotFound("User Not Found");
+            //}
 
             var jobs = await unit.JobTracks.GetJobTracksForUserPaginatedAsync(userId, request);
 
@@ -162,9 +160,11 @@ namespace Application.Services
             return Result<PagedResponse<JobTrackDto>>.Ok(result);
         }
 
-        public Task<Result<IEnumerable<UserActivityDto>>> GetRecentActivitesAsync(int userId)
+        public async Task<Result<IEnumerable<UserActivityDto>>> GetRecentActivitesAsync(int userId)
         {
-            throw new NotImplementedException();
+            var user = await unit.Users.GetUserWithAllEntitiesAsync(userId);
+
+            return Result<IEnumerable<UserActivityDto>>.BadRequest(user.ToString());
         }
     }
 }

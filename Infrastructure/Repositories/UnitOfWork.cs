@@ -8,7 +8,7 @@ namespace Infrastructure.Repositories
     {
         private readonly AppDbContext _context;
 
-        private IRepository<User>? _users;
+        private IUserRepository? _users;
         private IRepository<UserCv>? _userCvs;
         private IRepository<UserExperience>? _userExperiences;
         private IRepository<UserEducation>? _userEducations;
@@ -33,8 +33,8 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public IRepository<User> Users =>
-            _users ??= new Repository<User>(_context);
+        public IUserRepository Users =>
+            _users ??= new UserRepository(_context);
 
         public IRepository<UserCv> UserCvs =>
             _userCvs ??= new Repository<UserCv>(_context);

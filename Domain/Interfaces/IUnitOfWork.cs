@@ -4,7 +4,7 @@ namespace Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<User> Users { get; }
+        IUserRepository Users { get; }
         IRepository<UserCv> UserCvs { get; }
         IRepository<UserExperience> UserExperiences { get; }
         IRepository<UserEducation> UserEducations { get; }

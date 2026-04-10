@@ -10,5 +10,6 @@ namespace API.Controllers
     public abstract class BaseController : ControllerBase
     {
         protected int CurrentUserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        protected string Role => User.FindFirstValue(ClaimTypes.Role);
     }
 }
