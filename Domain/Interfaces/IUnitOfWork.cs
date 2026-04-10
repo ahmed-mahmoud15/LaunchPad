@@ -14,7 +14,7 @@ namespace Domain.Interfaces
         IJobTrackRepository JobTracks { get; }
         IRepository<JobSkill> JobSkills { get; }
         IRepository<ApplicationHistory> ApplicationHistory { get; }
-        IRepository<Assessment> Assessments { get; }
+        IAssessmentsRepository Assessments { get; }
         IRepository<AssessmentQuestion> AssessmentQuestions { get; }
         IRepository<CodingQuestion> CodingQuestions { get; }
         IRepository<QuestionTopic> QuestionTopics { get; }

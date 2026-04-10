@@ -27,14 +27,14 @@ namespace Application.Services
 
         public async Task<Result<PagedResponse<AssessmentSummaryDto>>> GetAssessmentsAsync(int userId, PagedRequest request)
         {
-            var user = await unit.Users.GetByIdAsync(userId);
+            //var user = await unit.Users.GetByIdAsync(userId);
 
-            if(user is null)
-            {
-                return Result<PagedResponse<AssessmentSummaryDto>>.NotFound("User Not Found");
-            }
+            //if(user is null)
+            //{
+            //    return Result<PagedResponse<AssessmentSummaryDto>>.NotFound("User Not Found");
+            //}
 
-            var assessments = await unit.Assessments.FindAllPaginatedAsync(request, a => a.UserId == userId);
+            var assessments = await unit.Assessments.GetAssessmentForUserPaginatedAsync(userId, request);
 
             var result = new PagedResponse<AssessmentSummaryDto>() {
                 PageNumber = assessments.PageNumber,
@@ -61,12 +61,12 @@ namespace Application.Services
 
         public async Task<Result<PagedResponse<CvAnalysisDto>>> GetCvAnalysesAsync(int userId, PagedRequest request)
         {
-            var user = await unit.Users.GetByIdAsync(userId);
+            //var user = await unit.Users.GetByIdAsync(userId);
 
-            if (user is null)
-            {
-                return Result<PagedResponse<CvAnalysisDto>>.NotFound("User Not Found");
-            }
+            //if (user is null)
+            //{
+            //    return Result<PagedResponse<CvAnalysisDto>>.NotFound("User Not Found");
+            //}
 
             var cvs = await unit.CvJobAnalyses.FindAllPaginatedAsync(request, a => a.UserId == userId);
 
