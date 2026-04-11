@@ -162,9 +162,16 @@ namespace Application.Services
 
         public async Task<Result<IEnumerable<UserActivityDto>>> GetRecentActivitesAsync(int userId)
         {
-            var user = await unit.Users.GetUserWithAllEntitiesAsync(userId);
+            var activities = await unit.Users.GetRecentActivitiesAsync(userId, count: 5);
 
-            return Result<IEnumerable<UserActivityDto>>.BadRequest(user.ToString());
+            var result = activities.Select(a => new UserActivityDto
+            {
+                Activity = a.Activity,
+                Type = a.Type,
+                Date = a.Date
+            });
+
+            return Result<IEnumerable<UserActivityDto>>.Ok(result);
         }
     }
 }

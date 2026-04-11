@@ -20,27 +20,64 @@ namespace Infrastructure.Repositories
             this.set = context.Users;
         }
 
-        public async Task<User> GetUserWithAllEntitiesAsync(int userId)
+        public async Task<IEnumerable<UserActivityRaw>> GetRecentActivitiesAsync(int userId, int count)
         {
-            //return await set.AsSplitQuery()
-            //                .Include(u => u.Assessments)
-            //                .Include(u => u.Interviews)
-            //                .Include(u => u.CvJobAnalyses)
-            //                .Include(u => u.Jobs)
-            //                    .ThenInclude(u => u.JobTrack)
-            //                .FirstOrDefaultAsync(u => u.Id == userId);
+            var jobActivities = await context.JobTracks
+                .Where(j => j.Job.UserId == userId)
+                .Select(j => new UserActivityRaw
+                {
+                    Type = "Job",
+                    Date = j.AppliedAt,
+                    Activity = $"Applied to job \"{j.Job.Title}\" at {j.CompanyName}"
+                })
+                .ToListAsync();
 
-            return await set
-                        .Where(u => u.Id == userId).Select(u => new User{
-                            Assessments =  u.Assessments.OrderBy(a => a.CompletedAt == null ? 0 : 1).ThenByDescending(a => a.CreatedAt).ToList(),
-                            Interviews = u.Interviews.OrderBy(i => i.EndedAt == null ? 0 : 1).ThenByDescending(i => i.StartedAt).ToList(),
-                            Jobs = u.Jobs.Select(j => new Job
-                            {
-                                Id = j.Id,
-                                Title = j.Title,
-                                JobTrack = j.JobTrack
-                            }).ToList()
-                        }).FirstOrDefaultAsync();
+            var cvActivites = await context.CvJobAnalyses
+                .Where(c => c.UserId == userId)
+                .Select(c => new UserActivityRaw
+                {
+                    Type = "Cv",
+                    Date = c.Cv.UploadedAt,
+                    Activity = $"CV analyzed for job \"{c.Job.Title}\" (score: {c.Score})"
+                })
+                .ToListAsync();
+
+            var assessmentActivites = await context.Assessments
+                .Where(a => a.UserId == userId)
+                .Select(a => new UserActivityRaw {
+                    Type = "Assessment",
+                    Date = a.CreatedAt,
+                    Activity =$"Assessment created ({a.TotalCount}) questions"
+                })
+                .ToListAsync();
+
+            var inerviewStarted = await context.Interviews
+                .Where(i => i.UserId == userId)
+                .Select(i => new UserActivityRaw
+                {
+                    Type = "Interview",
+                    Date = i.StartedAt,
+                    Activity = $"Interview started"
+                })
+                .ToListAsync();
+
+            var inerviewCompleted = await context.Interviews
+                .Where(i => i.UserId == userId && i.EndedAt != null)
+                .Select(i => new UserActivityRaw
+                {
+                    Type = "Interview",
+                    Date = i.EndedAt!.Value,
+                    Activity = $"Interview completed with score {i.Score}"
+                })
+                .ToListAsync();
+
+            return jobActivities
+                    .Concat(assessmentActivites)
+                    .Concat(cvActivites)
+                    .Concat(inerviewStarted)
+                    .Concat(inerviewCompleted)
+                    .OrderByDescending(a => a.Date)
+                    .Take(count);
         }
     }
 }
