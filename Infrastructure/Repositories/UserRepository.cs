@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.RawData;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

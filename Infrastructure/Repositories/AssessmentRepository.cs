@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.Common;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.RawData;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +37,16 @@ namespace Infrastructure.Repositories
                 PageNumber = request.PageNumber,
                 PageSize = request.PageSize
             };
+        }
+
+        public async Task<AssessmentPreferencesRaw> GetAssessmentPreferencesRawAsync()
+        {
+            return await set.GroupBy(a => 1).Select(g => new AssessmentPreferencesRaw
+            {
+                EasyCount = g.Sum(a => a.EasyCount),
+                MediumCount = g.Sum(a => a.MediumCount),
+                HardCount = g.Sum(a => a.HardCount)
+            }).FirstOrDefaultAsync();
         }
     }
 }
