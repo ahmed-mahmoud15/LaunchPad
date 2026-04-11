@@ -29,9 +29,14 @@ namespace Application.Services
             });
         }
 
-        public Task<Result<CardInfoDto>> GetAssessmentsCountAsync()
+        public async Task<Result<CardInfoDto>> GetAssessmentsCountAsync()
         {
-            throw new NotImplementedException();
+            var rawData = await unit.Assessments.GetAssessmentCountAsync();
+            return Result<CardInfoDto>.Ok(new CardInfoDto
+            {
+                CountPerMonth = rawData.CountPerMonth,
+                TotalCount = rawData.TotalCount
+            });
         }
 
         public Task<Result<CardInfoDto>> GetCvAnalysesCountAsync()
@@ -49,9 +54,14 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<Result<CardInfoDto>> GetUsersCountAsync()
+        public async Task<Result<CardInfoDto>> GetUsersCountAsync()
         {
-            throw new NotImplementedException();
+            var rawData = await unit.Users.GetUsersCountAsync();
+            return Result<CardInfoDto>.Ok(new CardInfoDto
+            {
+                CountPerMonth = rawData.CountPerMonth,
+                TotalCount = rawData.TotalCount
+            });
         }
     }
 }

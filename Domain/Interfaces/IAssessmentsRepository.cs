@@ -13,5 +13,6 @@ namespace Domain.Interfaces
     {
         Task<PagedResponse<Assessment>> GetAssessmentForUserPaginatedAsync(int userId, PagedRequest request);
         Task<AssessmentPreferencesRaw> GetAssessmentPreferencesRawAsync();
+        Task<CardInfoRaw> GetAssessmentCountAsync();
     }
 }

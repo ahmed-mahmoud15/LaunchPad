@@ -22,6 +22,30 @@ namespace Infrastructure.Repositories
             this.set = context.Assessments;
         }
 
+        public async Task<CardInfoRaw> GetAssessmentCountAsync()
+        {
+            var start = new DateTime(DateTime.UtcNow.Year, 1, 1);
+            var end = start.AddYears(1);
+
+            var totalCount = await set.CountAsync();
+
+            var monthData = await set.Where(a => a.CreatedAt >= start && a.CreatedAt < end)
+                                .GroupBy(a => a.CreatedAt.Month)
+                                .Select(g => new
+                                {
+                                    Month = g.Key,
+                                    Count = g.Count()
+                                })
+                                .ToListAsync();
+
+            return new CardInfoRaw {
+                TotalCount = totalCount,
+                CountPerMonth = Enumerable.Range(1, 12)
+                .ToDictionary(m => m, m => monthData.FirstOrDefault(x => x.Month == m)?.Count ?? 0)
+            };
+
+        }
+
         public async Task<PagedResponse<Assessment>> GetAssessmentForUserPaginatedAsync(int userId, PagedRequest request)
         {
             var query = set.Where(x => x.UserId == userId);

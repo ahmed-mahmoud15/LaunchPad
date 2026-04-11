@@ -8,7 +8,7 @@ namespace Application.DTOs.Admin_Dashboard
 {
     public class CardInfoDto
     {
-        public int TotalCount;
-        public Dictionary<int, int> CountPerMonth = new Dictionary<int, int>();
+        public int TotalCount { get; set; }
+        public Dictionary<int, int> CountPerMonth { get; set; } = new();
     }
 }

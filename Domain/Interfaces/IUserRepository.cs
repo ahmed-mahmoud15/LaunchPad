@@ -11,5 +11,6 @@ namespace Domain.Interfaces
     public interface IUserRepository : IRepository<User>
     {
         Task<IEnumerable<UserActivityRaw>> GetRecentActivitiesAsync(int userId, int count);
+        Task<CardInfoRaw> GetUsersCountAsync();
     }
 }
