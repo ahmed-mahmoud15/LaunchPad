@@ -39,19 +39,34 @@ namespace Application.Services
             });
         }
 
-        public Task<Result<CardInfoDto>> GetCvAnalysesCountAsync()
+        public async Task<Result<CardInfoDto>> GetCvAnalysesCountAsync()
         {
-            throw new NotImplementedException();
+            var rawData = await unit.UserCvs.GetCvCountAsync();
+            return Result<CardInfoDto>.Ok(new CardInfoDto
+            {
+                CountPerMonth = rawData.CountPerMonth,
+                TotalCount = rawData.TotalCount
+            });
         }
 
-        public Task<Result<CvEvaluationScoreDto>> GetCvEvaluationScoreAsync()
+        public async Task<Result<CvEvaluationScoreDto>> GetCvEvaluationScoreAsync(int average)
         {
-            throw new NotImplementedException();
+            var rawData = await unit.UserCvs.GetCvEvaluationAsync(average);
+            return Result<CvEvaluationScoreDto>.Ok(new CvEvaluationScoreDto
+            {
+                BelowAverage = rawData.BelowAverage,
+                AboveAverage = rawData.AboveAverage
+            });
         }
 
-        public Task<Result<CardInfoDto>> GetInterviewsCountAsync()
+        public async Task<Result<CardInfoDto>> GetInterviewsCountAsync()
         {
-            throw new NotImplementedException();
+            var rawData = await unit.Interviews.GetInterviewCountAsync();
+            return Result<CardInfoDto>.Ok(new CardInfoDto
+            {
+                CountPerMonth = rawData.CountPerMonth,
+                TotalCount = rawData.TotalCount
+            });
         }
 
         public async Task<Result<CardInfoDto>> GetUsersCountAsync()

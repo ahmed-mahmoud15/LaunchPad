@@ -12,6 +12,7 @@ namespace Infrastructure.Data.Configurations
 
             builder.Property(c => c.Feedback).IsRequired();
             builder.Property(c => c.Score).IsRequired();
+            builder.Property(c => c.AnalyzeDate).IsRequired();
 
             builder.HasOne(c => c.User)
                 .WithMany(u => u.CvJobAnalyses)

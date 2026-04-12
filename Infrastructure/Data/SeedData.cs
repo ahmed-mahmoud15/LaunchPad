@@ -661,7 +661,8 @@ namespace Infrastructure.Data
                     CvId = 1,
                     JobId = 1,
                     Feedback = "Strong match. CV highlights C# and SQL Server experience well. Consider adding cloud certifications to strengthen the Azure requirement.",
-                    Score = 88
+                    Score = 88,
+                    AnalyzeDate = new DateTime(2026, 1, 15, 8, 30, 15, DateTimeKind.Utc)
                 },
                 new CvJobAnalysis
                 {
@@ -670,7 +671,8 @@ namespace Infrastructure.Data
                     CvId = 2,
                     JobId = 2,
                     Feedback = "Excellent frontend skills. Portfolio projects with React and TypeScript are directly relevant. Minor gap: no fintech domain experience mentioned.",
-                    Score = 92
+                    Score = 92,
+                    AnalyzeDate = new DateTime(2026, 2, 15, 8, 30, 15, DateTimeKind.Utc)
                 },
                 new CvJobAnalysis
                 {
@@ -679,7 +681,8 @@ namespace Infrastructure.Data
                     CvId = 3,
                     JobId = 3,
                     Feedback = "Good Python skills shown. Azure experience is limited to internship level; obtaining an AZ-900 certification would significantly improve this application.",
-                    Score = 70
+                    Score = 70,
+                    AnalyzeDate = new DateTime(2026, 3, 15, 8, 30, 15, DateTimeKind.Utc)
                 }
             );
         }

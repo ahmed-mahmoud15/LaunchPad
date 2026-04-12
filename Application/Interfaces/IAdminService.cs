@@ -15,6 +15,6 @@ namespace Application.Interfaces
         Task<Result<CardInfoDto>> GetInterviewsCountAsync();
         Task<Result<CardInfoDto>> GetCvAnalysesCountAsync();
         Task<Result<AssessmentPreferencesDto>> GetAssessmentPreferencesAsync();
-        Task<Result<CvEvaluationScoreDto>> GetCvEvaluationScoreAsync();
+        Task<Result<CvEvaluationScoreDto>> GetCvEvaluationScoreAsync(int average);
     }
 }

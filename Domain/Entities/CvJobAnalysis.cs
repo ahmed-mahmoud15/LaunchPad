@@ -8,6 +8,7 @@
         public int JobId { get; set; }
         public string Feedback { get; set; }
         public int Score { get; set; }
+        public DateTime AnalyzeDate { get; set; }
 
         public User User { get; set; }
         public UserCv Cv { get; set; }

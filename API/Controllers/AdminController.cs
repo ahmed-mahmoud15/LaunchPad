@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Domain.RawData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,5 +51,33 @@ namespace API.Controllers
             var result = await adminService.GetCvAnalysesCountAsync();
             return Ok(result.Value);
         }
+
+        [HttpGet("cv-evaluation/{average:int}")]
+        public async Task<IActionResult> GetCvCardCount(int average)
+        {
+            var result = await adminService.GetCvEvaluationScoreAsync(average);
+            return Ok(result.Value);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDashboard()
+        {
+            var userCard = await adminService.GetUsersCountAsync();
+            var assessmentCard = await adminService.GetAssessmentsCountAsync();
+            var interviewCard = await adminService.GetInterviewsCountAsync();
+            var cvCard = await adminService.GetCvAnalysesCountAsync();
+            var assessmentPreferences = await adminService.GetAssessmentPreferencesAsync();
+            var cvEvalution = await adminService.GetCvEvaluationScoreAsync(75);
+            return Ok(new
+            {
+                AssessmentCard = assessmentCard.Value,
+                AssessmentPreferences = assessmentPreferences.Value,
+                CvEvaluation = cvEvalution.Value,
+                UserCard = userCard.Value,
+                interviewCard = interviewCard.Value,
+                cvCard = cvCard.Value
+            });
+        }
+
     }
 }

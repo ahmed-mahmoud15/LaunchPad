@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories
         private readonly AppDbContext _context;
 
         private IUserRepository? _users;
-        private IRepository<UserCv>? _userCvs;
+        private ICvRepository? _userCvs;
         private IRepository<UserExperience>? _userExperiences;
         private IRepository<UserEducation>? _userEducations;
         private IRepository<UserSkill>? _userSkills;
@@ -23,7 +23,7 @@ namespace Infrastructure.Repositories
         private IRepository<CodingQuestion>? _codingQuestions;
         private IRepository<QuestionTopic>? _questionTopics;
         private IRepository<HrQuestion>? _hrQuestions;
-        private IRepository<Interview>? _interviews;
+        private IInterviewRepository? _interviews;
         private IRepository<InterviewQuestion>? _interviewQuestions;
         private IRepository<CvJobAnalysis>? _cvJobAnalyses;
         private IRepository<CodingQuestionTopic>? _codingQuestionTopics;
@@ -36,8 +36,8 @@ namespace Infrastructure.Repositories
         public IUserRepository Users =>
             _users ??= new UserRepository(_context);
 
-        public IRepository<UserCv> UserCvs =>
-            _userCvs ??= new Repository<UserCv>(_context);
+        public ICvRepository UserCvs =>
+            _userCvs ??= new CvRepository(_context);
 
         public IRepository<UserExperience> UserExperiences =>
             _userExperiences ??= new Repository<UserExperience>(_context);
@@ -78,8 +78,8 @@ namespace Infrastructure.Repositories
         public IRepository<HrQuestion> HrQuestions =>
             _hrQuestions ??= new Repository<HrQuestion>(_context);
 
-        public IRepository<Interview> Interviews =>
-            _interviews ??= new Repository<Interview>(_context);
+        public IInterviewRepository Interviews =>
+            _interviews ??= new InterviewRepository(_context);
 
         public IRepository<InterviewQuestion> InterviewQuestions =>
             _interviewQuestions ??= new Repository<InterviewQuestion>(_context);
