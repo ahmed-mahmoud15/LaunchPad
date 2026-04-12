@@ -24,6 +24,8 @@ namespace Application.Services
             this.unit = unit;
         }
 
+        
+
         public async Task<Result<StartAssessmentDto>> StartAssessmentAsync(int userId, int easyCount, int mediumCount, int hardCount)
         {
             try {
@@ -31,7 +33,8 @@ namespace Application.Services
 
                 Assessment assesment = new Assessment()
                 {
-                    CreatedAt = DateTime.Now,
+                    CreatedAt = DateTime.UtcNow,
+                    StartedAt = DateTime.UtcNow,
                     EasyCount = easyCount,
                     MediumCount = mediumCount,
                     HardCount = hardCount,
@@ -125,7 +128,7 @@ namespace Application.Services
                 return Result<SubmitResponseDto>.NotFound("This question is not found");
             }
 
-            var assessment = await unit.Assessments.GetByIdAsync(assessmentQuestion.AssessmentId);
+            var assessment = await unit.Assessments.GetAssessmentWithIncludesAsync(assessmentQuestion.AssessmentId);
 
             if(assessment is null || assessment.UserId != userId)
             {
@@ -151,21 +154,65 @@ namespace Application.Services
                 return Result<SubmitResponseDto>.ServerError($"Assessment Engine server is not reachable: {ex.Message}");
             }
 
-            assessmentQuestion.Status = response.Status switch
+            assessmentQuestion.Status = response.StatusCode switch
             {
-                "Accepted" => SubmissionStatus.Accepted,
-                "Wrong Answer" => SubmissionStatus.WrongAnswer,
-                "Internal Error" => SubmissionStatus.Error,
+                10 => SubmissionStatus.Accepted,
+                11 => SubmissionStatus.WrongAnswer,
                 _ => SubmissionStatus.Error
             };
             assessmentQuestion.CodeSubmitted = request.Code;
-            assessmentQuestion.LanguageUsed = response.Language;
+            assessmentQuestion.LanguageUsed = response.Lang.Name;
             assessmentQuestion.SubmittedAt = DateTime.UtcNow;
 
             await unit.AssessmentQuestions.UpdateAsync(assessmentQuestion);
             await unit.SaveChangesAsync();
 
             return Result<SubmitResponseDto>.Ok(response);
+        }
+
+        public async Task<Result> EndAssessmentAsync(int assessmentId, int userId)
+        {
+            var assessment = await unit.Assessments.GetAssessmentWithIncludesAsync(assessmentId);
+
+            if (assessment is null ) {
+                return Result.NotFound("Assessment not found");
+            }
+
+            if (assessment.UserId != userId) {
+                return Result.NotFound("Assessment not found");
+            }
+
+            if(assessment.CompletedAt is not null)
+            {
+                return Result.BadRequest("Assessment is alreadt completed");
+            }
+
+
+            int totalWeight = assessment.EasyCount + assessment.MediumCount * 3 + assessment.HardCount * 5;
+
+            int earnedWeight = 0;
+
+            foreach (var question in assessment.Questions) { 
+                if(question.Status != SubmissionStatus.Accepted)
+                {
+                    continue;
+                }
+
+                earnedWeight += question.Question.Difficulty switch
+                {
+                    QuestionDifficulty.Easy => 1,
+                    QuestionDifficulty.Medium => 3,
+                    QuestionDifficulty.Hard => 5,
+                    _ => 1
+                };
+            }
+            assessment.Score = (int)Math.Round(100.0 * earnedWeight / totalWeight);
+            assessment.CompletedAt = DateTime.UtcNow;
+
+            await unit.Assessments.UpdateAsync(assessment);
+            await unit.SaveChangesAsync();
+
+            return Result.NoContent();
         }
     }
 }

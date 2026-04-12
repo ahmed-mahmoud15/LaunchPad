@@ -34,5 +34,19 @@ namespace API.Controllers
             var result = await service.SubmitProblemAsync(dto, CurrentUserId, assessmentQuestionId);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
+
+        [HttpPut("end")]
+        public async Task<IActionResult> EndAssessment(
+                [FromQuery] int assessmentId,
+                [FromQuery] int userId
+            )
+        {
+            if (userId != CurrentUserId) {
+                return Unauthorized("You are not allowed to access this content");
+            }
+
+            await service.EndAssessmentAsync(assessmentId, userId);
+            return NoContent();
+        }
     }
 }

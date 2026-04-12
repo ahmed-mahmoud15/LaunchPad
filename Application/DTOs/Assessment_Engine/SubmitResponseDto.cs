@@ -30,15 +30,50 @@ namespace Application.DTOs.Assessment_Engine
     public class SubmitResponseDto
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
-        [JsonPropertyName("lang")]
-        public string Language { get; set; }
-        [JsonPropertyName("statusDisplay")]
-        public string Status { get; set; }
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
-        [JsonPropertyName("titleSlug")]
-        public string Slug { get; set; }
+        public long Id { get; set; }
 
+        [JsonPropertyName("runtime")]
+        public int Runtime { get; set; }
+
+        [JsonPropertyName("runtimeDisplay")]
+        public string RuntimeDisplay { get; set; }
+        [JsonPropertyName("memory")]
+        public long Memory { get; set; }
+
+        [JsonPropertyName("statusCode")]
+        public int StatusCode { get; set; }
+
+        [JsonPropertyName("memoryDisplay")]
+        public string MemoryDisplay { get; set; }
+        [JsonPropertyName("totalCorrect")]
+        public int TotalCorrect { get; set; }
+
+        [JsonPropertyName("totalTestcases")]
+        public int TotalTestcases { get; set; }
+
+        [JsonPropertyName("lang")]
+        public LanguageDto Lang { get; set; }
+
+        [JsonPropertyName("question")]
+        public QuestionDto Question { get; set; }
+    }
+    public class LanguageDto
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("verboseName")]
+        public string VerboseName { get; set; }
+    }
+    public class QuestionDto
+    {
+        [JsonPropertyName("questionId")]
+        public string QuestionId { get; set; }
+
+        [JsonPropertyName("titleSlug")]
+        public string TitleSlug { get; set; }
+
+        [JsonPropertyName("hasFrontendPreview")]
+        public bool HasFrontendPreview { get; set; }
     }
 }

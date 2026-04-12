@@ -72,5 +72,10 @@ namespace Infrastructure.Repositories
                 HardCount = g.Sum(a => a.HardCount)
             }).FirstOrDefaultAsync();
         }
+
+        public async Task<Assessment> GetAssessmentWithIncludesAsync(int assessmentId)
+        {
+            return await set.Include(a => a.Questions).ThenInclude(q => q.Question).FirstOrDefaultAsync(a => a.Id == assessmentId);
+        }
     }
 }
