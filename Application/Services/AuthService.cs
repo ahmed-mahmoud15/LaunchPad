@@ -99,7 +99,8 @@ namespace Application.Services
                 Token = token,
                 Email = user.Email,
                 FullName = $"{user.FirstName} {user.LastName}",
-                Role = user.Role.ToString()
+                Role = user.Role.ToString(),
+                UserId = user.Id
             };
         }
     }
