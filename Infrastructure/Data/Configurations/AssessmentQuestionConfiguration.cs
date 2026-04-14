@@ -15,6 +15,11 @@ namespace Infrastructure.Data.Configurations
             builder.Property(aq => aq.LanguageUsed).IsRequired().HasMaxLength(50);
             builder.Property(aq => aq.SubmittedAt).IsRequired();
 
+            builder.Property(aq => aq.RunTime).IsRequired(false);
+            builder.Property(aq => aq.Memory).IsRequired(false);
+            builder.Property(aq => aq.TotalTestCases).IsRequired(false);
+            builder.Property(aq => aq.TestCasesPasses).IsRequired(false);
+
             builder.HasOne(aq => aq.Assessment)
                 .WithMany(a => a.Questions)
                 .HasForeignKey(aq => aq.AssessmentId)

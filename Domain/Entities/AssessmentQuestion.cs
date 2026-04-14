@@ -12,6 +12,11 @@ namespace Domain.Entities
         public string LanguageUsed { get; set; }
         public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
 
+        public int? RunTime { get; set; }
+        public long? Memory { get; set; }
+        public int? TestCasesPasses { get; set; }
+        public int? TotalTestCases {  get; set; }
+
         public Assessment Assessment { get; set; }
         public CodingQuestion Question { get; set; }
     }

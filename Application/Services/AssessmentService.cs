@@ -163,6 +163,10 @@ namespace Application.Services
             assessmentQuestion.CodeSubmitted = request.Code;
             assessmentQuestion.LanguageUsed = response.Lang.Name;
             assessmentQuestion.SubmittedAt = DateTime.UtcNow;
+            assessmentQuestion.RunTime = response.Runtime;
+            assessmentQuestion.Memory = response.Memory;
+            assessmentQuestion.TestCasesPasses = response.TotalCorrect;
+            assessmentQuestion.TotalTestCases = response.TotalCorrect;
 
             await unit.AssessmentQuestions.UpdateAsync(assessmentQuestion);
             await unit.SaveChangesAsync();
@@ -170,21 +174,21 @@ namespace Application.Services
             return Result<SubmitResponseDto>.Ok(response);
         }
 
-        public async Task<Result> EndAssessmentAsync(int assessmentId, int userId)
+        public async Task<Result<int>> EndAssessmentAsync(int assessmentId, int userId)
         {
             var assessment = await unit.Assessments.GetAssessmentWithIncludesAsync(assessmentId);
 
             if (assessment is null ) {
-                return Result.NotFound("Assessment not found");
+                return Result<int>.NotFound("Assessment not found");
             }
 
             if (assessment.UserId != userId) {
-                return Result.NotFound("Assessment not found");
+                return Result<int>.NotFound("Assessment not found");
             }
 
             if(assessment.CompletedAt is not null)
             {
-                return Result.BadRequest("Assessment is alreadt completed");
+                return Result<int>.BadRequest("Assessment is alreadt completed");
             }
 
 
@@ -206,13 +210,14 @@ namespace Application.Services
                     _ => 1
                 };
             }
-            assessment.Score = (int)Math.Round(100.0 * earnedWeight / totalWeight);
+            int score = (int)Math.Round(100.0 * earnedWeight / totalWeight);
+            assessment.Score = score;
             assessment.CompletedAt = DateTime.UtcNow;
 
             await unit.Assessments.UpdateAsync(assessment);
             await unit.SaveChangesAsync();
 
-            return Result.NoContent();
+            return Result<int>.Ok(score);
         }
     }
 }

@@ -45,8 +45,8 @@ namespace API.Controllers
                 return Unauthorized("You are not allowed to access this content");
             }
 
-            await service.EndAssessmentAsync(assessmentId, userId);
-            return NoContent();
+            var result = await service.EndAssessmentAsync(assessmentId, userId);
+            return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
     }
 }

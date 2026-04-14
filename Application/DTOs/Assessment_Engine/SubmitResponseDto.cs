@@ -9,24 +9,6 @@ using Domain.Enums;
 namespace Application.DTOs.Assessment_Engine
 {
 
-    /*
-     sample output
-
-            {
-                "id": 1969725292,
-                "lang": "csharp",
-                "time": "0 minutes",
-                "timestamp": 1775400881000,
-                "statusDisplay": "Accepted",
-                "runtime": 1,
-                "url": "/submissions/detail/1969725292/",
-                "isPending": false,
-                "title": "Add Binary",
-                "memory": 41.1,
-                "titleSlug": "add-binary"
-            }
-     */
-
     public class SubmitResponseDto
     {
         [JsonPropertyName("id")]
