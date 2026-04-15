@@ -11,7 +11,8 @@ namespace Infrastructure.Data.Configurations
             builder.HasKey(h => h.Id);
 
             builder.Property(h => h.JobTrackId).IsRequired();
-            builder.Property(h => h.Status).IsRequired();
+            builder.Property(h => h.From).IsRequired();
+            builder.Property(h => h.To).IsRequired();
             builder.Property(h => h.Notes).HasMaxLength(1000);
             builder.Property(h => h.UpdatedAt).IsRequired();
 

@@ -6,7 +6,8 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public int JobTrackId { get; set; }
-        public ApplicationStatus Status { get; set; }
+        public ApplicationStatus From { get; set; }
+        public ApplicationStatus To { get; set; }
         public string? Notes { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

@@ -11,7 +11,7 @@ namespace Domain.Entities
         public DateTime AppliedAt { get; set; } = DateTime.UtcNow;
         public decimal? Salary { get; set; }
         public string? JobUrl { get; set; }
-        public ApplicationStatus CurrentStatus { get; set; } = ApplicationStatus.Pending;
+        public ApplicationStatus CurrentStatus { get; set; } = ApplicationStatus.NoAction;
 
         public Job Job { get; set; }
         public ICollection<ApplicationHistory> History { get; set; } = new List<ApplicationHistory>();

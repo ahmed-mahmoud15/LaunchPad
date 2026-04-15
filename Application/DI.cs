@@ -18,6 +18,7 @@ namespace Application
             services.AddScoped<IAssessmentService, AssessmentService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IJobTrackingService, JobTrackingService>();
             return services;
         }
     }

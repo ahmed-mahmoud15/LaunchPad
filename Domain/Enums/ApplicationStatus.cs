@@ -8,7 +8,10 @@ namespace Domain.Enums
 {
     public enum ApplicationStatus
     {
-        Pending = 1,
+        NoAction = 0,
+        Applied,
+        Assessment,
+        Interview,
         Shortlisted,
         Rejected,
         Accepted

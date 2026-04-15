@@ -382,7 +382,7 @@ namespace Infrastructure.Data
                     AppliedAt = new DateTime(2025, 10, 5, 10, 0, 0, DateTimeKind.Utc),
                     Salary = 18000.00m,
                     JobUrl = "https://jobs.noon.com/job/2",
-                    CurrentStatus = ApplicationStatus.Pending
+                    CurrentStatus = ApplicationStatus.Applied
                 },
                 new JobTrack
                 {
@@ -393,7 +393,7 @@ namespace Infrastructure.Data
                     AppliedAt = new DateTime(2025, 10, 10, 9, 0, 0, DateTimeKind.Utc),
                     Salary = 20000.00m,
                     JobUrl = "https://careers.ibm.com/job/3",
-                    CurrentStatus = ApplicationStatus.Pending
+                    CurrentStatus = ApplicationStatus.Applied
                 }
             );
 
@@ -418,7 +418,8 @@ namespace Infrastructure.Data
                 {
                     Id = 1,
                     JobTrackId = 1,
-                    Status = ApplicationStatus.Pending,
+                    From = ApplicationStatus.NoAction,
+                    To = ApplicationStatus.Applied,
                     Notes = "Applied via company portal.",
                     UpdatedAt = new DateTime(2025, 10, 1, 12, 0, 0, DateTimeKind.Utc)
                 },
@@ -426,7 +427,8 @@ namespace Infrastructure.Data
                 {
                     Id = 2,
                     JobTrackId = 1,
-                    Status = ApplicationStatus.Shortlisted,
+                    From = ApplicationStatus.Assessment,
+                    To = ApplicationStatus.Interview,
                     Notes = "Recruiter reached out for a technical screen.",
                     UpdatedAt = new DateTime(2025, 10, 8, 9, 0, 0, DateTimeKind.Utc)
                 },
@@ -434,7 +436,8 @@ namespace Infrastructure.Data
                 {
                     Id = 3,
                     JobTrackId = 2,
-                    Status = ApplicationStatus.Pending,
+                    From = ApplicationStatus.NoAction,
+                    To = ApplicationStatus.Applied,
                     Notes = "Applied via LinkedIn Easy Apply.",
                     UpdatedAt = new DateTime(2025, 10, 5, 10, 0, 0, DateTimeKind.Utc)
                 },
@@ -442,7 +445,8 @@ namespace Infrastructure.Data
                 {
                     Id = 4,
                     JobTrackId = 3,
-                    Status = ApplicationStatus.Pending,
+                    From = ApplicationStatus.NoAction,
+                    To = ApplicationStatus.Applied,
                     Notes = "Applied through IBM careers page.",
                     UpdatedAt = new DateTime(2025, 10, 10, 9, 0, 0, DateTimeKind.Utc)
                 }
