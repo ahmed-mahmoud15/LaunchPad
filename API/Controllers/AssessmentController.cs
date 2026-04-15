@@ -35,6 +35,13 @@ namespace API.Controllers
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
 
+        [HttpPost("run/{assessmentQuestionId:int}")]
+        public async Task<IActionResult> RunQuestion(int assessmentQuestionId, [FromBody] SubmitRequestDto dto)
+        {
+            var result = await service.RunProblemAsync(dto, CurrentUserId, assessmentQuestionId);
+            return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
+        }
+
         [HttpPut("end")]
         public async Task<IActionResult> EndAssessment(
                 [FromQuery] int assessmentId,

@@ -79,5 +79,33 @@ namespace API.Controllers
             });
         }
 
+        [HttpPatch("{id:int}/ban")]
+        public async Task<IActionResult> BanUser(int id)
+        {
+            var result = await adminService.BanUser(id);
+            if (result.IsSuccess)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return StatusCode(result.StatusCode, result.ErrorMessage);
+            }
+        }
+
+        [HttpPatch("{id:int}/activate")]
+        public async Task<IActionResult> ActivateUser(int id)
+        {
+            var result = await adminService.ActivateUser(id);
+            if (result.IsSuccess)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return StatusCode(result.StatusCode, result.ErrorMessage);
+            }
+        }
+
     }
 }

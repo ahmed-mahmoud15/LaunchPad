@@ -16,5 +16,6 @@ namespace Application.DTOs.User
         public string Address { get; set; }
         public DateOnly JoinDate { get; set; }
         public string Role { get; set; }
+        public bool IsActive { get; set; }
     }
 }

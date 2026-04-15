@@ -219,5 +219,35 @@ namespace Application.Services
 
             return Result<int>.Ok(score);
         }
+
+        public async Task<Result<SubmitResponseDto>> RunProblemAsync(SubmitRequestDto request, int userId, int assessmentQuestionId)
+        {
+            var assessmentQuestion = await unit.AssessmentQuestions.GetByIdAsync(assessmentQuestionId);
+
+            if (assessmentQuestion is null)
+            {
+                return Result<SubmitResponseDto>.NotFound("This question is not found");
+            }
+            var codingQuestion = await unit.CodingQuestions.GetByIdAsync(assessmentQuestion.QuestionId);
+
+            if (codingQuestion is null)
+            {
+                return Result<SubmitResponseDto>.NotFound("This coding question is not found");
+            }
+
+            var slug = codingQuestion.TitleSlug;
+
+
+            SubmitResponseDto response;
+            try
+            {
+                response = await client.SubmitAsync(slug, request);
+            }
+            catch (Exception ex)
+            {
+                return Result<SubmitResponseDto>.ServerError($"Assessment Engine server is not reachable: {ex.Message}");
+            }
+            return Result<SubmitResponseDto>.Ok(response);
+        }
     }
 }

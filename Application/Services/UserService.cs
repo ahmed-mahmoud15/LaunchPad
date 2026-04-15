@@ -86,7 +86,8 @@ namespace Application.Services
                     Id = user.Id,
                     JoinDate = user.JoinDate,
                     PhoneNumber = user.PhoneNumber,
-                    Role = user.Role.ToString()
+                    Role = user.Role.ToString(),
+                    IsActive = user.IsActive,
                 };
                 data.Add(dto);
             }

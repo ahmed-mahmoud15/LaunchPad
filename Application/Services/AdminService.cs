@@ -17,6 +17,42 @@ namespace Application.Services
             this.unit = unit;
         }
 
+        public async Task<Result> ActivateUser(int userId)
+        {
+            var user = await unit.Users.GetByIdAsync(userId);
+            if (user is null)
+            {
+                return Result.NotFound("User Not Found");
+            }
+            if (user.IsActive)
+            {
+                return Result.BadRequest("User is Active");
+            }
+
+            user.IsActive = true;
+            await unit.Users.UpdateAsync(user);
+            await unit.SaveChangesAsync();
+            return Result.NoContent();
+        }
+
+        public async Task<Result> BanUser(int userId)
+        {
+            var user = await unit.Users.GetByIdAsync(userId);
+            if(user is null)
+            {
+                return Result.NotFound("User Not Found");
+            }
+            if(user.IsActive == false)
+            {
+                return Result.BadRequest("User is Banned");
+            }
+
+            user.IsActive = false;
+            await unit.Users.UpdateAsync(user);
+            await unit.SaveChangesAsync();
+            return Result.NoContent();
+        }
+
         public async Task<Result<AssessmentPreferencesDto>> GetAssessmentPreferencesAsync()
         {
             var rawData = await unit.Assessments.GetAssessmentPreferencesRawAsync();
