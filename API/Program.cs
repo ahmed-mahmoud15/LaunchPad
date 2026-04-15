@@ -81,7 +81,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference(options => {
-        options.WithTitle("LaunchPad");        
+        options.WithTitle("LaunchPad").
+        WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);        
     });
 }
 

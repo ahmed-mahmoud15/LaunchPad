@@ -27,6 +27,13 @@ namespace API.Controllers
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
 
+        [HttpGet("restart")]
+        public async Task<IActionResult> ReStartAssessment([FromQuery] int assessmentId)
+        {
+            var result = await service.RestartAssessmentAsync(userId: CurrentUserId,assessmentId: assessmentId);
+            return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
+        }
+
 
         [HttpPost("submit/{assessmentQuestionId:int}")]
         public async Task<IActionResult> SubmitQuestion(int assessmentQuestionId, [FromBody] SubmitRequestDto dto)

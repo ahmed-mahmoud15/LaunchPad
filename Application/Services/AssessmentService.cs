@@ -249,5 +249,51 @@ namespace Application.Services
             }
             return Result<SubmitResponseDto>.Ok(response);
         }
+
+        public async Task<Result<IEnumerable<SolvedProblemDto>>> RestartAssessmentAsync(int userId, int assessmentId)
+        {
+            var assessment = await unit.Assessments.GetAssessmentWithIncludesAsync(assessmentId);
+
+            if(assessment is null)
+            {
+                return Result<IEnumerable<SolvedProblemDto>>.NotFound("Assessment Not Found");
+            }
+
+            if(assessment.UserId != userId)
+            {
+                return Result<IEnumerable<SolvedProblemDto>>.Unauthorized("You are not allowed to open this assessment");
+            }
+
+            if(assessment.CompletedAt is not null)
+            {
+                return Result<IEnumerable<SolvedProblemDto>>.BadRequest($"This assessment is completed");
+            }
+
+            List<SolvedProblemDto> result = new List<SolvedProblemDto>();
+
+            foreach (var question in assessment.Questions) {
+                var item = new SolvedProblemDto
+                {
+                    AssessmentQuestionId = question.Id,
+                    Description = question.Question.Description,
+                    Difficulty = question.Question.Difficulty.ToString(),
+                    QuestionId = question.Question.LeetcodeId.ToString(),
+                    Title = question.Question.Title,
+                    TitleSlug = question.Question.TitleSlug,
+                    IsSolved = false,
+                };
+                if(question.Status != SubmissionStatus.NotAttempted)
+                {
+                    item.IsSolved = true;
+                    item.RunTime = question.RunTime;
+                    item.Memory = question.Memory;
+                    item.TotalTestCases = question.TotalTestCases;
+                    item.TestCasesPassed = question.TestCasesPasses;
+                    item.Status = question.Status;
+                }
+                result.Add(item);
+            }
+            return Result<IEnumerable<SolvedProblemDto>>.Ok(result);
+        }
     }
 }
