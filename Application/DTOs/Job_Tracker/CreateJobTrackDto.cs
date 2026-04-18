@@ -14,7 +14,11 @@ namespace Application.DTOs.Job_Tracker
         public string CompanyName { get; set; }
         public string Location { get; set; }
         public string Status { get; set; }
+        public string? JobUrl { get; set; }
+        public decimal? Salary { get; set; }
         public bool IsCvUploaded { get; set; }
+        public string? Notes { get; set; }
         public int? CvId { get; set; }
+        public List<CreateJobSkillDto> Skills { get; set; } = new List<CreateJobSkillDto>();
     }
 }
