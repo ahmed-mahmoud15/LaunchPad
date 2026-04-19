@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces;
 using Application.Services;
+using Application.Services.Cloudinary;
 using Application.Services.Drive;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +23,8 @@ namespace Application
             services.AddScoped<IJobTrackingService, JobTrackingService>();
             services.AddScoped<IUserCvService, UserCvService>();
 
-            services.AddSingleton<IGoogleDriveService, GoogleDriveService>();
+            //services.AddSingleton<IGoogleDriveService, GoogleDriveService>();
+            services.AddSingleton<IStorageService, CloudinaryStorageService>();
             return services;
         }
     }

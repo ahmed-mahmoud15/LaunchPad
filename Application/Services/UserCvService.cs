@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Cv;
 using Application.Interfaces;
+using Application.Services.Cloudinary;
 using Application.Services.Drive;
 using Domain.Common;
 using Domain.Entities;
@@ -15,9 +16,9 @@ namespace Application.Services
     public class UserCvService : IUserCvService
     {
         private readonly IUnitOfWork unit;
-        private readonly IGoogleDriveService drive;
+        private readonly IStorageService drive;
 
-        public UserCvService(IUnitOfWork unit, IGoogleDriveService drive)
+        public UserCvService(IUnitOfWork unit, IStorageService drive)
         {
             this.unit = unit;
             this.drive = drive;
@@ -49,13 +50,13 @@ namespace Application.Services
             }
 
             using var stream = dto.File.OpenReadStream();
-            var result = await drive.UploadAsync(stream, dto.File.FileName, dto.File.ContentType, DriveFolder.Cvs);
+            var result = await drive.UploadAsync(stream, dto.File.FileName, StorageFolder.Cvs);
 
             var cv = new UserCv
             {
                 UserId = userId,
                 FileName = result.FileName,
-                FilePath = result.FileId,
+                FilePath = result.PublicId,
                 UploadedAt = DateTime.UtcNow,
                 Score = 0, // till adding scoring functionality
                 IsDefault = false
