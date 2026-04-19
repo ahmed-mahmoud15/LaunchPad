@@ -13,7 +13,8 @@ namespace API.Controllers
     {
         private readonly IJobTrackingService jobService;
 
-        public JobsController(IJobTrackingService jobService) {
+        public JobsController(IJobTrackingService jobService)
+        {
             this.jobService = jobService;
         }
 

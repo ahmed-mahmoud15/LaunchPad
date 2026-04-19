@@ -31,6 +31,7 @@ namespace Application.Services
             foreach (var c in cvs) {
                 result.Add(new UserCvDto
                 {
+                    Id = c.Id,
                     UserId = userId,
                     FileName = c.FileName,
                     FilePath = c.FilePath,
@@ -42,11 +43,11 @@ namespace Application.Services
             return Result<IEnumerable<UserCvDto>>.Ok(result);
         }
 
-        public async Task<Result> UploadCvAsync(int userId, UploadCvDto dto)
+        public async Task<Result<int>> UploadCvAsync(int userId, UploadCvDto dto)
         {
             if(dto is null)
             {
-                return Result.BadRequest("DTO is null");
+                return Result<int>.BadRequest("DTO is null");
             }
 
             using var stream = dto.File.OpenReadStream();
@@ -64,7 +65,7 @@ namespace Application.Services
 
             await unit.UserCvs.AddAsync(cv);
             await unit.SaveChangesAsync();
-            return Result.Ok();
+            return Result<int>.Ok(cv.Id);
         }
     }
 }

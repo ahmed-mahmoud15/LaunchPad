@@ -16,6 +16,7 @@ namespace Application.Services
     public class JobTrackingService : IJobTrackingService
     {
         private readonly IUnitOfWork unit;
+        private readonly IUserCvService cvService;
 
         public JobTrackingService(IUnitOfWork unit)
         {
@@ -39,8 +40,28 @@ namespace Application.Services
             {
                 return Result.BadRequest("DTO can't be null");
             }
-
-            var cv = dto.IsCvUploaded ? await unit.UserCvs.GetByIdAsync(dto.CvId.Value) : null;
+            int cvId;
+            if (dto.CvId is not null)
+            {
+                var cv = await unit.UserCvs.FindAsync(c => c.Id == dto.CvId);
+                cvId = cv.Id;
+            }
+            else if (dto.NewCvDto is not null)
+            {
+                var cvResult = await cvService.UploadCvAsync(userId, dto.NewCvDto);
+                if (cvResult is not null && cvResult.IsSuccess)
+                {
+                    cvId = cvResult.Value;
+                }
+                else
+                {
+                    return Result.BadRequest(cvResult.ErrorMessage);
+                }
+            }
+            else
+            {
+                return Result.BadRequest("You must upload cv or select one of yours");
+            }
 
             var newJob = new Job
             {
@@ -56,7 +77,7 @@ namespace Application.Services
                     "internship" => JobType.Internship,
                     _ => JobType.FullTime
                 },
-                Cv = cv
+                CvId = cvId
             };
 
             var newJobTrack = new JobTrack
@@ -85,7 +106,8 @@ namespace Application.Services
 
                 skill ??= new Skill { Name = jobSkill.Name }; // if skill is null then create new skill with this name
 
-                newJobTrack.SkillsRequired.Add(new JobSkill {
+                newJobTrack.SkillsRequired.Add(new JobSkill
+                {
                     Skill = skill,
                     JobTrack = newJobTrack,
                     RequiredLevel = jobSkill.Level.ToLower() switch
@@ -108,6 +130,7 @@ namespace Application.Services
             };
 
             await unit.JobTracks.AddAsync(newJobTrack);
+            await unit.ApplicationHistory.AddAsync(application);
             await unit.SaveChangesAsync();
 
 

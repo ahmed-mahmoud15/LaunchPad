@@ -36,7 +36,7 @@ namespace API.Controllers
             }
 
             var result = await cvService.UploadCvAsync(userId, dto);
-            return StatusCode(result.StatusCode, !result.IsSuccess ? result.ErrorMessage : null);
+            return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
     }
 }

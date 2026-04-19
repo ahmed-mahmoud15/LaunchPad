@@ -11,6 +11,6 @@ namespace Application.Interfaces
     public interface IUserCvService
     {
         public Task<Result<IEnumerable<UserCvDto>>> GetUserCvsAsync(int userId);
-        public Task<Result> UploadCvAsync(int userId, UploadCvDto dto);
+        public Task<Result<int>> UploadCvAsync(int userId, UploadCvDto dto);
     }
 }
