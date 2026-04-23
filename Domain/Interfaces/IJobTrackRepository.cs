@@ -11,5 +11,6 @@ namespace Domain.Interfaces
     public interface IJobTrackRepository : IRepository<JobTrack>
     {
         Task<PagedResponse<JobTrack>> GetJobTracksForUserPaginatedAsync(int userId, PagedRequest request);
+        Task<JobTrack> GetJobTracksWithIncludes(int jobTrackId);
     }
 }
