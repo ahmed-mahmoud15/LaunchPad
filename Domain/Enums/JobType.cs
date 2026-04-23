@@ -11,6 +11,7 @@ namespace Domain.Enums
         FullTime = 1,
         PartTime,
         Remote,
+        Internship,
         Freelance
     }
 }

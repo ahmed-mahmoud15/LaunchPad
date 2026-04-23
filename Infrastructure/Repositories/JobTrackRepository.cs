@@ -38,5 +38,10 @@ namespace Infrastructure.Repositories
                 PageSize = request.PageSize
             };
         }
+
+        public async Task<JobTrack> GetJobTracksWithIncludes(int jobTrackId)
+        {
+            return await set.Include(j => j.History).Include(j => j.SkillsRequired).Include(j => j.Job).ThenInclude(j => j.Cv).FirstOrDefaultAsync(j => j.Id == jobTrackId);
+        }
     }
 }

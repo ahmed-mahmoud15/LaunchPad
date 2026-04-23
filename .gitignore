@@ -55,4 +55,5 @@ TestResults/
 postman/
 postman_environment.json
 
-secrets
+secrets/
+*.json
