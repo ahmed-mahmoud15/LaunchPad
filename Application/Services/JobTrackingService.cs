@@ -18,14 +18,56 @@ namespace Application.Services
         private readonly IUnitOfWork unit;
         private readonly IUserCvService cvService;
 
-        public JobTrackingService(IUnitOfWork unit)
+        public JobTrackingService(IUnitOfWork unit, IUserCvService cv)
         {
             this.unit = unit;
+            this.cvService = cv;
         }
 
-        public Task<Result> ChangeJobStatus(int userId, ChangeJobTrackStatusDto dto)
+        public async Task<Result> ChangeJobStatus(int userId, ChangeJobTrackStatusDto dto)
         {
-            throw new NotImplementedException();
+            var user = await unit.Users.GetByIdAsync(userId);
+            if(user is null)
+            {
+                return Result.NotFound("User not found");
+            }
+
+            if(dto is null)
+            {
+                return Result.BadRequest("DTO is null");
+            }
+
+            var jobTrack = await unit.JobTracks.GetByIdAsync(dto.JobTrackId);
+
+            if(jobTrack is null)
+            {
+                return Result.NotFound("Job not found");
+            }
+
+            if (jobTrack.CurrentStatus != dto.OldStatus)
+            {
+                return Result.BadRequest("Previous status didn't match");
+            }
+
+            if(dto.OldStatus == dto.NewStatus)
+            {
+                return Result.BadRequest("Status didn't change");
+            }
+
+            jobTrack.CurrentStatus = dto.NewStatus;
+
+            var application = new ApplicationHistory { 
+                From = dto.OldStatus,
+                To = dto.NewStatus,
+                Notes = dto.Notes,
+                UpdatedAt = DateTime.UtcNow,
+                JobTrackId = dto.JobTrackId
+            };
+
+            await unit.JobTracks.UpdateAsync(jobTrack);
+            await unit.ApplicationHistory.AddAsync(application);
+            await unit.SaveChangesAsync();
+            return Result.Ok();
         }
 
         public async Task<Result> CreateTrackedJob(int userId, CreateJobTrackDto dto)
@@ -137,14 +179,69 @@ namespace Application.Services
             return Result.NoContent();
         }
 
-        public Task<Result> DeleteTrackedJob(int userId, int jobTrackId)
+        public async Task<Result> DeleteTrackedJob(int userId, int jobTrackId)
         {
-            throw new NotImplementedException();
+            var user = await unit.Users.GetByIdAsync(userId);
+            if(user is null)
+            {
+                return Result.NotFound("User not found");
+            }
+
+            var job = await unit.JobTracks.GetByIdAsync(jobTrackId);
+            if (job is null)
+            {
+                return Result.NotFound("Job not found");
+            }
+
+            await unit.ApplicationHistory.DeleteAllByJobTrackIdAsync(jobTrackId);
+            await unit.Skills.DeleteJobSkillsByJobIdAsync(jobTrackId);
+            await unit.JobTracks.DeleteAsync(jobTrackId);
+
+            await unit.SaveChangesAsync();
+
+            return Result.NoContent();
         }
 
-        public Task<Result<ViewJobTrackDetailsDto>> DisplayJobHistory(int userId, int jobTrackId)
+        public async Task<Result<ViewJobTrackDetailsDto>> DisplayJobHistory(int userId, int jobTrackId)
         {
-            throw new NotImplementedException();
+            var user = await unit.Users.GetByIdAsync(userId);
+            if (user is null)
+            {
+                return Result<ViewJobTrackDetailsDto>.NotFound("User not found");
+            }
+
+            var jobTrack = await unit.JobTracks.GetJobTracksWithIncludes(jobTrackId);
+
+            if (jobTrack is null)
+            {
+                return Result<ViewJobTrackDetailsDto>.NotFound("Job not found");
+            }
+
+            var result = new ViewJobTrackDetailsDto
+            {
+                Id = jobTrack.Id,
+                AppliedDate = jobTrack.AppliedAt,
+                CompanyName = jobTrack.CompanyName,
+                JobDescription = jobTrack.Job.Info,
+                JobTitle = jobTrack.Job.Title,
+                JobType = jobTrack.Job.Type.ToString(),
+                Status = jobTrack.CurrentStatus.ToString(),
+                Location = jobTrack.Location ?? " - ",
+                History = new List<JobTrackHistoryDetailsDto>(),
+                Cv = jobTrack.Job.Cv.FileName // temp
+            };
+
+            foreach(var application in jobTrack.History)
+            {
+                result.History.Add(new JobTrackHistoryDetailsDto {
+                    OldStatus = application.From,
+                    NewStatus = application.To,
+                    Date = application.UpdatedAt,
+                    Notes = application.Notes
+                });
+            }
+
+            return Result<ViewJobTrackDetailsDto>.Ok(result);
         }
     }
 }

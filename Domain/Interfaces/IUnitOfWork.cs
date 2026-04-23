@@ -8,12 +8,10 @@ namespace Domain.Interfaces
         ICvRepository UserCvs { get; }
         IRepository<UserExperience> UserExperiences { get; }
         IRepository<UserEducation> UserEducations { get; }
-        IRepository<UserSkill> UserSkills { get; }
-        IRepository<Skill> Skills { get; }
+        ISkillRepository Skills { get; }
         IRepository<Job> Jobs { get; }
         IJobTrackRepository JobTracks { get; }
-        IRepository<JobSkill> JobSkills { get; }
-        IRepository<ApplicationHistory> ApplicationHistory { get; }
+        IApplicationRepository ApplicationHistory { get; }
         IAssessmentsRepository Assessments { get; }
         IRepository<AssessmentQuestion> AssessmentQuestions { get; }
         IRepository<CodingQuestion> CodingQuestions { get; }

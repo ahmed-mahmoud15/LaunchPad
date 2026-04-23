@@ -12,12 +12,10 @@ namespace Infrastructure.Repositories
         private ICvRepository? _userCvs;
         private IRepository<UserExperience>? _userExperiences;
         private IRepository<UserEducation>? _userEducations;
-        private IRepository<UserSkill>? _userSkills;
-        private IRepository<Skill>? _skills;
+        private ISkillRepository? _skills;
         private IRepository<Job>? _jobs;
         private IJobTrackRepository? _jobTracks;
-        private IRepository<JobSkill>? _jobSkills;
-        private IRepository<ApplicationHistory>? _applicationHistory;
+        private IApplicationRepository? _applicationHistory;
         private IAssessmentsRepository? _assessments;
         private IRepository<AssessmentQuestion>? _assessmentQuestions;
         private IRepository<CodingQuestion>? _codingQuestions;
@@ -45,11 +43,9 @@ namespace Infrastructure.Repositories
         public IRepository<UserEducation> UserEducations =>
             _userEducations ??= new Repository<UserEducation>(_context);
 
-        public IRepository<UserSkill> UserSkills =>
-            _userSkills ??= new Repository<UserSkill>(_context);
 
-        public IRepository<Skill> Skills =>
-            _skills ??= new Repository<Skill>(_context);
+        public ISkillRepository Skills =>
+            _skills ??= new SkillRepository(_context);
 
         public IRepository<Job> Jobs =>
             _jobs ??= new Repository<Job>(_context);
@@ -57,11 +53,8 @@ namespace Infrastructure.Repositories
         public IJobTrackRepository JobTracks =>
             _jobTracks ??= new JobTrackRepository(_context);
 
-        public IRepository<JobSkill> JobSkills =>
-            _jobSkills ??= new Repository<JobSkill>(_context);
-
-        public IRepository<ApplicationHistory> ApplicationHistory =>
-            _applicationHistory ??= new Repository<ApplicationHistory>(_context);
+        public IApplicationRepository ApplicationHistory =>
+            _applicationHistory ??= new ApplicationRepository(_context);
 
         public IAssessmentsRepository Assessments =>
             _assessments ??= new AssessmentRepository(_context);
