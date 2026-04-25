@@ -11,14 +11,15 @@ namespace API.Controllers
     {
         private readonly IUserCvService cvService;
 
-        public CvController(IUserCvService cvService) {
+        public CvController(IUserCvService cvService)
+        {
             this.cvService = cvService;
         }
 
         [HttpGet("{userId:int}")]
         public async Task<IActionResult> GetAllForUser(int userId)
         {
-            if(userId != CurrentUserId)
+            if (userId != CurrentUserId)
             {
                 return Unauthorized("You are not allowed to access this content");
             }
@@ -31,18 +32,46 @@ namespace API.Controllers
         public async Task<IActionResult> PreviewCv(int userId, int cvId)
         {
             if (userId != CurrentUserId)
-            {
                 return Unauthorized("You are not allowed to access this content");
-            }
 
-            var result = await cvService.GetCvByIdAsync(userId, cvId);
-            return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
+            var result = await cvService.GetCvFileAsync(userId, cvId);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result.ErrorMessage);
+
+            // inline = browser opens PDF in tab
+            Response.Headers.Append(
+                "Content-Disposition",
+                $"inline; filename=\"{result.Value.FileName}\""
+            );
+
+            return File(result.Value.FileStream, result.Value.ContentType);
         }
 
-        
+        // Forces browser to download the file
+        [HttpGet("{userId:int}/download/{cvId:int}")]
+        public async Task<IActionResult> DownloadCv(int userId, int cvId)
+        {
+            if (userId != CurrentUserId)
+                return Unauthorized("You are not allowed to access this content");
+
+            var result = await cvService.GetCvFileAsync(userId, cvId);
+
+            if (!result.IsSuccess)
+                return StatusCode(result.StatusCode, result.ErrorMessage);
+
+            // attachment = forces download with filename
+            return File(
+                result.Value.FileStream,
+                result.Value.ContentType,
+                result.Value.FileName      // this sets Content-Disposition: attachment
+            );
+        }
+
+
 
         [HttpPost("{userId:int}/upload")]
-        public async Task<IActionResult> Upload(int userId,[FromForm] UploadCvDto dto)
+        public async Task<IActionResult> Upload(int userId, [FromForm] UploadCvDto dto)
         {
             if (userId != CurrentUserId)
             {

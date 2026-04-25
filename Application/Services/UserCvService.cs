@@ -57,6 +57,31 @@ namespace Application.Services
             return Result<UserCvDto>.Ok(result);
         }
 
+        public async Task<Result<CvFileResult>> GetCvFileAsync(int userId, int cvId)
+        {
+            var cv = await unit.UserCvs.FindAsync(c => c.Id == cvId && c.UserId == userId);
+
+            if(cv is null)
+            {
+                return Result<CvFileResult>.NotFound("CV not found");
+            }
+
+            try
+            {
+                var stream = await drive.DownloadAsync(cv.FilePath);
+
+                return Result<CvFileResult>.Ok(new CvFileResult
+                {
+                    FileStream = stream,
+                    ContentType = "application/pdf",
+                    FileName = cv.FileName
+                });
+            }
+            catch (Exception ex) {
+                return Result<CvFileResult>.ServerError($"Could not retrieve file: {ex.Message}");
+            }
+        }
+
         public async Task<Result<IEnumerable<UserCvDto>>> GetUserCvsAsync(int userId)
         {
             var cvs = await unit.UserCvs.FindAllAsync(c => c.UserId == userId);

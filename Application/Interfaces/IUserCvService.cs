@@ -13,5 +13,6 @@ namespace Application.Interfaces
         public Task<Result<IEnumerable<UserCvDto>>> GetUserCvsAsync(int userId);
         public Task<Result<UserCvDto>> GetCvByIdAsync(int userId, int cvId);
         public Task<Result<int>> UploadCvAsync(int userId, UploadCvDto dto);
+        Task<Result<CvFileResult>> GetCvFileAsync(int userId, int cvId);
     }
 }
