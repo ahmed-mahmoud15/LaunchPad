@@ -50,11 +50,9 @@ namespace Application.Services
                 FilePath = cv.FilePath,
                 IsDefault = cv.IsDefault,
                 Score = cv.Score,
-                UploadedAt = cv.UploadedAt,
-                Url = drive.GetUrl(cv.FilePath)
+                UploadedAt = cv.UploadedAt
             };
 
-            Console.WriteLine(result.Url);
 
             return Result<UserCvDto>.Ok(result);
         }
@@ -72,8 +70,7 @@ namespace Application.Services
                     FilePath = c.FilePath,
                     IsDefault = c.IsDefault,
                     Score = c.Score,
-                    UploadedAt = c.UploadedAt,
-                    Url = drive.GetUrl(c.FilePath)
+                    UploadedAt = c.UploadedAt
                 });
             }
             return Result<IEnumerable<UserCvDto>>.Ok(result);
@@ -92,8 +89,8 @@ namespace Application.Services
             var cv = new UserCv
             {
                 UserId = userId,
-                FileName = result.FileName,
-                FilePath = result.PublicId,
+                FileName = result.PublicId,
+                FilePath = result.Url,
                 UploadedAt = DateTime.UtcNow,
                 Score = 0, // till adding scoring functionality
                 IsDefault = false

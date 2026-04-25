@@ -15,7 +15,5 @@ namespace Application.DTOs.Cv
         public bool IsDefault { get; set; } = false;
         public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
         public int Score { get; set; }
-
-        public string Url { get; set; }
     }
 }

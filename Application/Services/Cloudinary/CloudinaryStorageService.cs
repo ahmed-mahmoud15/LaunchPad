@@ -23,7 +23,7 @@ namespace Application.Services.Cloudinary
                 config["Cloudinary:ApiSecret"]
             );
             cloudinary = new CloudinaryDotNet.Cloudinary(account);
-            cloudinary.Api.Secure = true;
+            //cloudinary.Api.Secure = true;
         }
 
         public async Task DeleteAsync(string publicId)
@@ -40,7 +40,8 @@ namespace Application.Services.Cloudinary
 
         public string GetUrl(string publicId)
         {
-            return cloudinary.Api.UrlImgUp.ResourceType("raw").Transform(new Transformation().Flags("inline")).BuildUrl(publicId);
+            var cloudName = cloudinary.Api.Account.Cloud;
+            return $"https://res.cloudinary.com/{cloudName}/raw/upload/{publicId}";
         }
 
         public async Task<StorageUploadResult> UploadAsync(Stream stream, string fileName, StorageFolder folder)
@@ -49,8 +50,9 @@ namespace Application.Services.Cloudinary
             {
                 File = new FileDescription(fileName, stream),
                 Folder = folder.ToString(),
-                PublicId = $"{Guid.NewGuid()}_{fileName}",
                 UseFilename = false,
+                UniqueFilename = true,
+                Overwrite = false
             };
 
             var result = await cloudinary.UploadAsync(uploadParams);
@@ -59,6 +61,10 @@ namespace Application.Services.Cloudinary
             {
                 throw new Exception($"Cloudinary upload failed: {result.Error.Message}");
             }
+
+            Console.WriteLine($"[Cloudinary] PublicId: {result.PublicId}");
+            Console.WriteLine($"[Cloudinary] SecureUrl: {result.SecureUrl}");
+            Console.WriteLine($"[Cloudinary] ResourceType: {result.ResourceType}");
 
             return new StorageUploadResult(result.PublicId, result.SecureUrl.ToString(), fileName, result.Bytes);
         }
