@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Cv;
@@ -24,6 +25,40 @@ namespace Application.Services
             this.drive = drive;
         }
 
+        public async Task<Result<UserCvDto>> GetCvByIdAsync(int userId, int cvId)
+        {
+            var user = await unit.Users.GetByIdAsync(userId);
+            if (user == null) {
+                return Result<UserCvDto>.NotFound("User Not found");
+            }
+            var cv = await unit.UserCvs.GetByIdAsync(cvId);
+            if(cv is null)
+            {
+                return Result<UserCvDto>.NotFound("Cv Not found");
+            }
+
+            if(cv.UserId != userId)
+            {
+                return Result<UserCvDto>.Unauthorized("You are not allowed to access this resouce");
+            }
+
+            var result = new UserCvDto
+            {
+                Id = cv.Id,
+                UserId = userId,
+                FileName = cv.FileName,
+                FilePath = cv.FilePath,
+                IsDefault = cv.IsDefault,
+                Score = cv.Score,
+                UploadedAt = cv.UploadedAt,
+                Url = drive.GetUrl(cv.FilePath)
+            };
+
+            Console.WriteLine(result.Url);
+
+            return Result<UserCvDto>.Ok(result);
+        }
+
         public async Task<Result<IEnumerable<UserCvDto>>> GetUserCvsAsync(int userId)
         {
             var cvs = await unit.UserCvs.FindAllAsync(c => c.UserId == userId);
@@ -38,6 +73,7 @@ namespace Application.Services
                     IsDefault = c.IsDefault,
                     Score = c.Score,
                     UploadedAt = c.UploadedAt,
+                    Url = drive.GetUrl(c.FilePath)
                 });
             }
             return Result<IEnumerable<UserCvDto>>.Ok(result);

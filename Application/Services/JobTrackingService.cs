@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTOs.Cv;
 using Application.DTOs.Job_Tracker;
 using Application.Interfaces;
 using Domain.Common;
@@ -217,6 +218,10 @@ namespace Application.Services
                 return Result<ViewJobTrackDetailsDto>.NotFound("Job not found");
             }
 
+            var cvResult = await cvService.GetCvByIdAsync(userId, jobTrack.Job.Cv.Id);
+            UserCvDto cv = cvResult.IsSuccess ? cvResult.Value : null;
+
+
             var result = new ViewJobTrackDetailsDto
             {
                 Id = jobTrack.Id,
@@ -228,7 +233,7 @@ namespace Application.Services
                 Status = jobTrack.CurrentStatus.ToString(),
                 Location = jobTrack.Location ?? " - ",
                 History = new List<JobTrackHistoryDetailsDto>(),
-                Cv = jobTrack.Job.Cv.FileName // temp
+                Cv = cv
             };
 
             foreach(var application in jobTrack.History)

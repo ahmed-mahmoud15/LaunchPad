@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTOs.Cv;
 
 namespace Application.DTOs.Job_Tracker
 {
@@ -18,7 +19,7 @@ namespace Application.DTOs.Job_Tracker
         public DateTime AppliedDate { get; set; }
 
         // will replaced by cv data
-        public object? Cv {  get; set; }
+        public UserCvDto Cv {  get; set; }
 
         public List<JobTrackHistoryDetailsDto> History { get; set; } = new List<JobTrackHistoryDetailsDto>();
 
