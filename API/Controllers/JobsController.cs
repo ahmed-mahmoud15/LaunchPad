@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateJob(CreateJobTrackDto dto)
+        public async Task<IActionResult> CreateJob([FromForm]CreateJobTrackDto dto)
         {
             var result = await jobService.CreateTrackedJob(CurrentUserId, dto);
             return StatusCode(result.StatusCode, !result.IsSuccess ? result.ErrorMessage : null);

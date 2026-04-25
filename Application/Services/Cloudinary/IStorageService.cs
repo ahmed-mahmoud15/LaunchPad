@@ -10,6 +10,6 @@ namespace Application.Services.Cloudinary
     {
         public Task<StorageUploadResult> UploadAsync(Stream stream, string fileName, StorageFolder folder);
         public Task DeleteAsync(string publicId);
-        public string GetUrl(string publicId);
+        public Task<Stream> DownloadAsync(string fileUrl);
     }
 }
