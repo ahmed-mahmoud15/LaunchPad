@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Assessment_Engine;
@@ -24,26 +25,38 @@ namespace Application.Services
             this.unit = unit;
         }
 
-        public async Task<Result<PagedResponse<AssessmentSummaryDto>>> GetAssessmentsAsync(int userId, PagedRequest request)
+        public async Task<Result<PagedResponse<AssessmentSummaryDto>>> GetAssessmentsAsync(int userId, ProfileQueryRequest request)
         {
-            //var user = await unit.Users.GetByIdAsync(userId);
+            PagedRequest pagedRequest = request.ToPagedRequest();
 
-            //if(user is null)
-            //{
-            //    return Result<PagedResponse<AssessmentSummaryDto>>.NotFound("User Not Found");
-            //}
+            //var assessments = await unit.Assessments.GetAssessmentForUserPaginatedAsync(userId, request);
+            PagedResponse<Assessment> assessments = request.SortBy?.ToLower() switch
+            {
+                "score" => await unit.Assessments.FindAllPaginatedAsync(
+                    pagedRequest,
+                    a => a.UserId == userId,
+                    a => a.Score,
+                    request.Descending
+                    ),
+                "date" or null or _ => await unit.Assessments.FindAllPaginatedAsync(
+                    pagedRequest,
+                    a => a.UserId == userId,
+                    a => a.CreatedAt,
+                    request.Descending
+                    )
+            };
 
-            var assessments = await unit.Assessments.GetAssessmentForUserPaginatedAsync(userId, request);
-
-            var result = new PagedResponse<AssessmentSummaryDto>() {
+            var result = new PagedResponse<AssessmentSummaryDto>()
+            {
                 PageNumber = assessments.PageNumber,
                 PageSize = assessments.PageSize,
                 TotalCount = assessments.TotalCount
             };
 
-            foreach(var item in assessments.Items)
+            foreach (var item in assessments.Items)
             {
-                var dto = new AssessmentSummaryDto() {
+                var dto = new AssessmentSummaryDto()
+                {
                     Id = item.Id,
                     CreatedAt = item.CreatedAt,
                     EasyCount = item.EasyCount,
@@ -58,7 +71,7 @@ namespace Application.Services
             return Result<PagedResponse<AssessmentSummaryDto>>.Ok(result);
         }
 
-        public async Task<Result<PagedResponse<CvAnalysisDto>>> GetCvAnalysesAsync(int userId, PagedRequest request)
+        public async Task<Result<PagedResponse<CvAnalysisDto>>> GetCvAnalysesAsync(int userId, ProfileQueryRequest request)
         {
             //var user = await unit.Users.GetByIdAsync(userId);
 
@@ -67,7 +80,24 @@ namespace Application.Services
             //    return Result<PagedResponse<CvAnalysisDto>>.NotFound("User Not Found");
             //}
 
-            var cvs = await unit.CvJobAnalyses.FindAllPaginatedAsync(request, a => a.UserId == userId);
+            //var cvs = await unit.CvJobAnalyses.FindAllPaginatedAsync(request, a => a.UserId == userId);
+            var pagedRequest = request.ToPagedRequest();
+            var cvs = request.SortBy?.ToLower() switch
+            {
+                "score" => await unit.CvJobAnalyses.FindAllPaginatedAsync(
+                    pagedRequest,
+                    a => a.UserId == userId,
+                    a => a.Score,
+                    request.Descending
+                    ),
+
+                "date" or null or _ => await unit.CvJobAnalyses.FindAllPaginatedAsync(
+                    pagedRequest,
+                    a => a.UserId == userId,
+                    a => a.AnalyzeDate,
+                    request.Descending
+                    )
+            };
 
             var result = new PagedResponse<CvAnalysisDto>()
             {
@@ -90,16 +120,26 @@ namespace Application.Services
             return Result<PagedResponse<CvAnalysisDto>>.Ok(result);
         }
 
-        public async Task<Result<PagedResponse<InterviewSummaryDto>>> GetInterviewsAsync(int userId, PagedRequest request)
+        public async Task<Result<PagedResponse<InterviewSummaryDto>>> GetInterviewsAsync(int userId, ProfileQueryRequest request)
         {
-            //var user = await unit.Users.GetByIdAsync(userId);
+            var pagedRequest = request.ToPagedRequest();
 
-            //if (user is null)
-            //{
-            //    return Result<PagedResponse<InterviewSummaryDto>>.NotFound("User Not Found");
-            //}
+            var interviews = request.SortBy?.ToLower() switch
+            {
+                "score" => await unit.Interviews.FindAllPaginatedAsync(
+                    pagedRequest,
+                    i => i.UserId == userId,
+                    i => i.Score,
+                    request.Descending
+                    ),
 
-            var interviews = await unit.Interviews.FindAllPaginatedAsync(request, a => a.UserId == userId);
+                "date" or null or _ => await unit.Interviews.FindAllPaginatedAsync(
+                    pagedRequest,
+                    i => i.UserId == userId,
+                    i => i.EndedAt,
+                    request.Descending
+                    )
+            };
 
             var result = new PagedResponse<InterviewSummaryDto>()
             {
@@ -115,7 +155,7 @@ namespace Application.Services
                     Id = item.Id,
                     Score = item.Score,
                     StartedAt = item.StartedAt,
-                    EndedAt = item.EndedAt ,
+                    EndedAt = item.EndedAt,
                 };
                 result.Items.Add(dto);
             }

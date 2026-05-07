@@ -57,6 +57,30 @@ namespace Infrastructure.Repositories
             };
         }
 
+        public async Task<PagedResponse<T>> FindAllPaginatedAsync<TKey>(PagedRequest request, Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> orderBy, bool descending = false, Func<IQueryable<T>, IQueryable<T>>? include = null)
+        {
+            IQueryable<T> query = set;
+            if(include is not null)
+            {
+                query = include(query);
+            }
+            query = query.Where(predicate);
+
+            query = descending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+
+            int totalCount = await query.CountAsync();
+
+            var items = await query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+
+            return new PagedResponse<T>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
+        }
+
         public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await set.FirstOrDefaultAsync(predicate);
