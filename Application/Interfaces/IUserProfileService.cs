@@ -16,8 +16,8 @@ namespace Application.Interfaces
     {
         Task<Result<IEnumerable<UserActivityDto>>> GetRecentActivitesAsync(int userId);
         Task<Result<PagedResponse<JobTrackDto>>> GetJobTracksAsync(int userId, PagedRequest request);
-        Task<Result<PagedResponse<AssessmentSummaryDto>>> GetAssessmentsAsync(int userId, PagedRequest request);
-        Task<Result<PagedResponse<InterviewSummaryDto>>> GetInterviewsAsync(int userId, PagedRequest request);
-        Task<Result<PagedResponse<CvAnalysisDto>>> GetCvAnalysesAsync(int userId, PagedRequest request);
+        Task<Result<PagedResponse<AssessmentSummaryDto>>> GetAssessmentsAsync(int userId, ProfileQueryRequest request);
+        Task<Result<PagedResponse<InterviewSummaryDto>>> GetInterviewsAsync(int userId, ProfileQueryRequest request);
+        Task<Result<PagedResponse<CvAnalysisDto>>> GetCvAnalysesAsync(int userId, ProfileQueryRequest request);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.DTOs.User;
+using Application.Interfaces;
 using Domain.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -44,7 +45,7 @@ namespace API.Controllers
 
         // GET api/profile/{id}/assessments?pageNumber=1&pageSize=10
         [HttpGet("{id:int}/assessments")]
-        public async Task<IActionResult> GetAssessments(int id, [FromQuery] PagedRequest request)
+        public async Task<IActionResult> GetAssessments(int id, [FromQuery] ProfileQueryRequest request)
         {
             if (CurrentUserId != id && Role != "Admin")
             {
@@ -56,7 +57,7 @@ namespace API.Controllers
 
         // GET api/profile/{id}/interviews?pageNumber=1&pageSize=10
         [HttpGet("{id:int}/interviews")]
-        public async Task<IActionResult> GetInterviews(int id, [FromQuery] PagedRequest request)
+        public async Task<IActionResult> GetInterviews(int id, [FromQuery] ProfileQueryRequest request)
         {
             if (CurrentUserId != id && Role != "Admin")
             {
@@ -68,7 +69,7 @@ namespace API.Controllers
 
         // GET api/profile/{id}/cv-analyses?pageNumber=1&pageSize=10
         [HttpGet("{id:int}/cv-analyses")]
-        public async Task<IActionResult> GetCvAnalyses(int id, [FromQuery] PagedRequest request)
+        public async Task<IActionResult> GetCvAnalyses(int id, [FromQuery] ProfileQueryRequest request)
         {
             if (CurrentUserId != id && Role != "Admin")
             {
