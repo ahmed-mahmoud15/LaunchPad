@@ -85,7 +85,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{userId:int}/analyze")]
-        public async Task<IActionResult> Analyze(int userId, [FromBody] AnalyzeCvRequestDto request)
+        public async Task<IActionResult> Analyze(int userId, [FromForm] AnalyzeCvRequestDto request)
         {
             if (userId != CurrentUserId)
             {

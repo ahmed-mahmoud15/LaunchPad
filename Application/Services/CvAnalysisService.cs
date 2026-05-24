@@ -18,29 +18,80 @@ namespace Application.Services
         private readonly IUnitOfWork unit;
         private readonly ICvAnalyzerClient cvAnalyzerClient;
         private readonly IStorageService storage;
+        private readonly IUserCvService userCvService;
 
-        public CvAnalysisService(IUnitOfWork unit, ICvAnalyzerClient cvClient, IStorageService storage)
+        public CvAnalysisService(IUnitOfWork unit, ICvAnalyzerClient cvClient, IStorageService storage, IUserCvService userCvService)
         {
             this.unit = unit;
             this.cvAnalyzerClient = cvClient;
             this.storage = storage;
+            this.userCvService = userCvService;
         }
 
         public async Task<Result<AnalyzeCvResultDto>> AnalyzeCvAsync(int userId, AnalyzeCvRequestDto dto)
         {
-            var cv = await unit.UserCvs.FindAsync(c => c.Id == dto.CvId && c.UserId == userId);
-
-            if (cv is null)
+            int cvId;
+            UserCv cv;
+            if (dto.CvId.HasValue)
             {
-                return Result<AnalyzeCvResultDto>.NotFound("Cv not found or does not belong to you");
+                cv = await unit.UserCvs.FindAsync(c => c.Id == dto.CvId && c.UserId == userId);
+                if (cv is null)
+                {
+                    return Result<AnalyzeCvResultDto>.NotFound("Cv not found or does not belong to you");
+                }
+
+                cvId = cv.Id;
+            }
+            else
+            {
+                var uploadDto = new UploadCvDto
+                {
+                    File = dto.File
+                };
+                var uploadResult = await userCvService.UploadCvAsync(userId, uploadDto);
+                if (!uploadResult.IsSuccess)
+                {
+                    return Result<AnalyzeCvResultDto>.BadRequest(uploadResult.ErrorMessage);
+                }
+                cvId = uploadResult.Value;
+
+                cv = await unit.UserCvs.GetByIdAsync(cvId);
             }
 
-            var job = await unit.Jobs.FindAsync(j => j.Id == dto.JobId && j.UserId == userId);
 
-            if (job is null)
+            int jobId;
+            Job job;
+
+            if (dto.JobId.HasValue)
             {
-                return Result<AnalyzeCvResultDto>.NotFound("job not found or does not belong to you");
+                job = await unit.Jobs.FindAsync(j => j.Id == dto.JobId && j.UserId == userId);
+
+                if (job is null)
+                {
+                    return Result<AnalyzeCvResultDto>.NotFound("job not found or does not belong to you");
+                }
+                jobId = job.Id;
             }
+            else
+            {
+                job = new Job
+                {
+                    UserId = userId,
+                    CvId = cvId,
+                    Title = dto.JobTitle,
+                    Info = dto.JobDescription,
+                    Type = Domain.Enums.JobType.FullTime,
+
+                };
+
+                await unit.Jobs.AddAsync(job);
+                await unit.SaveChangesAsync();
+
+                jobId = job.Id;
+            }
+
+
+
 
             Stream pdfStream;
             try
@@ -72,8 +123,8 @@ namespace Application.Services
             var analysis = new CvJobAnalysis
             {
                 UserId = userId,
-                CvId = dto.CvId,
-                JobId = dto.JobId,
+                CvId = cvId,
+                JobId = jobId,
                 Score = (int)Math.Round(response.JobMatchResults?.FinalScore ?? 0),
                 Feedback = feedback,
                 AnalyzeDate = DateTime.UtcNow
