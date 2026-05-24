@@ -24,6 +24,13 @@ namespace Infrastructure
                 client.BaseAddress = new Uri(baseUrl.EndsWith('/') ? baseUrl : baseUrl + "/");
             } );
 
+            services.AddHttpClient<ICvAnalyzerClient, CvAnalyzerClient>(client =>
+            {
+                var baseUrl = configuration["CvAnalyzer:BaseUrl"];
+                client.BaseAddress = new Uri(baseUrl.EndsWith('/') ? baseUrl : baseUrl + '/');
+                client.Timeout = TimeSpan.FromSeconds(120);
+            });
+
             return services;
         }
     }

@@ -10,10 +10,12 @@ namespace API.Controllers
     public class CvController : BaseController
     {
         private readonly IUserCvService cvService;
+        private readonly ICvAnalysisService analysisService;
 
-        public CvController(IUserCvService cvService)
+        public CvController(IUserCvService cvService, ICvAnalysisService analysisService)
         {
             this.cvService = cvService;
+            this.analysisService = analysisService;
         }
 
         [HttpGet("{userId:int}")]
@@ -79,6 +81,17 @@ namespace API.Controllers
             }
 
             var result = await cvService.UploadCvAsync(userId, dto);
+            return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
+        }
+
+        [HttpPost("{userId:int}/analyze")]
+        public async Task<IActionResult> Analyze(int userId, [FromForm] AnalyzeCvRequestDto request)
+        {
+            if (userId != CurrentUserId)
+            {
+                return Unauthorized("You are not allowed to access this content");
+            }
+            var result = await analysisService.AnalyzeCvAsync(userId, request);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
     }

@@ -114,7 +114,7 @@ namespace Application.Services
             var cv = new UserCv
             {
                 UserId = userId,
-                FileName = result.PublicId,
+                FileName = dto.File.FileName,
                 FilePath = result.Url,
                 UploadedAt = DateTime.UtcNow,
                 Score = 0, // till adding scoring functionality

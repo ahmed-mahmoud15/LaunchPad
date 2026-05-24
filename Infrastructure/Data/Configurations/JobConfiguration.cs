@@ -13,7 +13,7 @@ namespace Infrastructure.Data.Configurations
             builder.HasKey(j => j.Id);
 
             builder.Property(j => j.Title).IsRequired().HasMaxLength(200);
-            builder.Property(j => j.Info).HasMaxLength(2000);
+            builder.Property(j => j.Info).HasColumnType("nvarchar(max)");
             builder.Property(j => j.Type).IsRequired();
 
             builder.HasOne(j => j.User)
