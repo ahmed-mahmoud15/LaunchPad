@@ -22,6 +22,7 @@ namespace Application
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IJobTrackingService, JobTrackingService>();
             services.AddScoped<IUserCvService, UserCvService>();
+            services.AddScoped<IJobService, JobService>();
 
             services.AddScoped<ICvAnalysisService, CvAnalysisService>();
             //services.AddSingleton<IGoogleDriveService, GoogleDriveService>();
