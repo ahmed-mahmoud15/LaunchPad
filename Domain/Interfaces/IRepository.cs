@@ -19,7 +19,8 @@ namespace Domain.Interfaces
 
         Task<T?> FindAsync(Expression<Func<T, bool>> predicate);
         Task<PagedResponse<T>> FindAllPaginatedAsync(PagedRequest request, Expression<Func<T, bool>> predicate);
-        Task<PagedResponse<T>> FindAllPaginatedAsync<TKey>(PagedRequest request, Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> orderBy, bool descending = false, Func<IQueryable<T>, IQueryable<T>>? include = null);
+        //Task<PagedResponse<T>> FindAllPaginatedAsync<TKey>(PagedRequest request, Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> orderBy, bool descending = false, Func<IQueryable<T>, IQueryable<T>>? include = null);
+        Task<PagedResponse<T>> FindAllPaginatedAsync<TKey>(PagedRequest request, Expression<Func<T, bool>> predicate, Expression<Func<T, TKey>> orderBy, bool descending = false, params Expression<Func<T, object>>[] includes);
         Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate);
     }
 }
