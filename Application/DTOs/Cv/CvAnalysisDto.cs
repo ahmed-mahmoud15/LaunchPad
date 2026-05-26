@@ -11,5 +11,7 @@ namespace Application.DTOs.Cv
         public int Id { get; set; }
         public string Feedback { get; set; }
         public int Score { get; set; }
+        public string JobTitle { get; set; }
+        public DateTime AnalyzeDate { get; set; }
     }
 }

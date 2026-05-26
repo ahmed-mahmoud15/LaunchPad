@@ -88,14 +88,16 @@ namespace Application.Services
                     pagedRequest,
                     a => a.UserId == userId,
                     a => a.Score,
-                    request.Descending
+                    request.Descending,
+                    includes : a => a.Job
                     ),
 
                 "date" or null or _ => await unit.CvJobAnalyses.FindAllPaginatedAsync(
                     pagedRequest,
                     a => a.UserId == userId,
                     a => a.AnalyzeDate,
-                    request.Descending
+                    request.Descending,
+                    includes: a => a.Job
                     )
             };
 
@@ -112,7 +114,9 @@ namespace Application.Services
                 {
                     Id = item.Id,
                     Score = item.Score,
-                    Feedback = item.Feedback
+                    Feedback = item.Feedback,
+                    AnalyzeDate = item.AnalyzeDate,
+                    JobTitle = item.Job.Title
                 };
                 result.Items.Add(dto);
             }
