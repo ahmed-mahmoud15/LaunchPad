@@ -8,8 +8,9 @@ namespace Application.DTOs.Jobs
 {
     public class JobDto
     {
-        public int JobId { get; set; }
-        public string JotTitle { get; set; }
-        public string JobType { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
     }
 }

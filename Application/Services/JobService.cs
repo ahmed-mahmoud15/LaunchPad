@@ -30,9 +30,10 @@ namespace Application.Services
 
             var result = jobs.Select(j => new JobDto
             {
-                JobId = j.Id,
-                JotTitle = j.Title,
-                JobType = j.Type.ToString()
+                Id = j.Id,
+                Title = j.Title,
+                Type = j.Type.ToString(),
+                Description = j.Info
             }).ToList();
 
             return Result<IEnumerable<JobDto>>.Ok(result);
@@ -49,9 +50,10 @@ namespace Application.Services
 
             var result = new JobDto
             {
-                JobId = job.Id,
-                JotTitle = job.Title,
-                JobType = job.Type.ToString()
+                Id = job.Id,
+                Title = job.Title,
+                Type = job.Type.ToString(),
+                Description = job.Info
             };
 
             return Result<JobDto>.Ok(result);
