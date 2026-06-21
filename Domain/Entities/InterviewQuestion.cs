@@ -7,6 +7,7 @@
         public int InterviewId { get; set; }
         public string UserResponse { get; set; }
         public string? Feedback { get; set; }
+        public double? Score { get; set; }
 
         public Interview Interview { get; set; }
         public HrQuestion Question { get; set; }
