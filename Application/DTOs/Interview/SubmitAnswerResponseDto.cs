@@ -10,6 +10,6 @@ namespace Application.DTOs.Interview
     {
         public string Transcription {  get; set; }
         public SpeechAnalysisDto? SpeechAnalysis { get; set; }
-        public EvaluateAnswerResponseDto? Evaluation { get; set; }
+        public EvaluationScoresDto? Evaluation { get; set; }
     }
 }

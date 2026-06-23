@@ -8,7 +8,7 @@ namespace Application.DTOs.Interview
 {
     public class StartInterviewRequestDto
     {
-        public int? JobDescription {  get; set; }
+        public string? JobDescription {  get; set; }
         public int? JobId { get; set; }
         public int BehavioralCount { get; set; }
         public int TechnicalCount { get; set; }

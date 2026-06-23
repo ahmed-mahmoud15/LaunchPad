@@ -5,8 +5,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Application.DTOs.Interview;
+using Application.Interfaces;
 
-namespace Application.Interfaces
+namespace Application.Services
 {
     public class InterviewSimulatorClient : IInterviewSimulatorClient
     {
@@ -43,13 +44,14 @@ namespace Application.Interfaces
             var payload = new GenerateQuestionsRequestDto
             {
                 JobDescription = jobDescription,
-                Modes = modes.Keys.ToList<string>(),
+                Modes = modes.Keys.ToList(),
                 Counts = modes,
                 Resume = null
             };
             var content = new StringContent(JsonSerializer.Serialize(payload, Options), Encoding.UTF8, "application/json");
 
             var response = await http.PostAsync("generate_questions", content);
+            response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<GenerateQuestionsResponseDto>(json, Options) ?? throw new InvalidOperationException("Null response from Interview Simulator");

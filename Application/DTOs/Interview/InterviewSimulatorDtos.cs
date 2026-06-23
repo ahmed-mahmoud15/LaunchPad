@@ -32,7 +32,7 @@ namespace Application.DTOs.Interview
     public class GenerateQuestionsResponseDto
     {
         [JsonPropertyName("questions")]
-        public List<SimulatorQuestionDto> Questions = new List<SimulatorQuestionDto>();
+        public List<SimulatorQuestionDto> Questions { get; set; } = new List<SimulatorQuestionDto>();
         [JsonPropertyName("modes_used")]
         public List<string> ModesUsed { get; set; } = new();
     }
