@@ -12,6 +12,7 @@ namespace Infrastructure.Data.Configurations
 
             builder.Property(iq => iq.UserResponse).IsRequired();
             builder.Property(iq => iq.Feedback).HasMaxLength(2000);
+            builder.Property(iq => iq.Score).IsRequired(false);
 
             builder.HasOne(iq => iq.Question)
                 .WithMany()

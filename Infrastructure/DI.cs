@@ -31,6 +31,13 @@ namespace Infrastructure
                 client.Timeout = TimeSpan.FromSeconds(120);
             });
 
+            services.AddHttpClient<IInterviewSimulatorClient, InterviewSimulatorClient>(client =>
+            {
+                var baseUrl = configuration["InterviewSimulator:BaseUrl"]!;
+                client.BaseAddress = new Uri(baseUrl.EndsWith('/') ? baseUrl : baseUrl + '/');
+                client.Timeout = TimeSpan.FromSeconds(180);
+            });
+
             return services;
         }
     }
