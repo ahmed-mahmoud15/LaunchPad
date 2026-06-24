@@ -44,7 +44,6 @@ namespace Application.Services
             var payload = new GenerateQuestionsRequestDto
             {
                 JobDescription = jobDescription,
-                Modes = modes.Keys.ToList(),
                 Counts = modes,
                 Resume = null
             };

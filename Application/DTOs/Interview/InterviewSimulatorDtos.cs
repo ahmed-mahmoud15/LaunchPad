@@ -15,8 +15,6 @@ namespace Application.DTOs.Interview
         public string JobDescription {  get; set; }
         [JsonPropertyName("resume")]
         public string? Resume {  get; set; }
-        [JsonPropertyName("modes")]
-        public List<string> Modes { get; set; } = new List<string>();
         [JsonPropertyName("counts")]
         public Dictionary<string, int> Counts { get; set; } = new Dictionary<string, int>();
     }
