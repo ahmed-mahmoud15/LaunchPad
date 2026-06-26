@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using Application.Validations;
 using Microsoft.AspNetCore.Http;
 
@@ -49,8 +50,9 @@ namespace Application.DTOs.Cv
 
 
 
-    [ValidAnalyzeCvJob]
-    public class AnalyzeCvRequestDto
+    [ValidCv]
+    [ValidJob]
+    public class AnalyzeCvRequestDto : ICvRequest
     {
         public int? CvId { get; set; }
         public IFormFile? File { get; set; }

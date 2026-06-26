@@ -11,7 +11,8 @@ namespace Application.Interfaces
     {
         Task<GenerateQuestionsResponseDto> GenerateQuestionsAsync(
             string jobDescription,
-            Dictionary<string, int> modes
+            Dictionary<string, int> modes,
+            string? resume
         );
         Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(
             Stream fileStream,

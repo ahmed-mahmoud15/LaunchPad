@@ -3,9 +3,11 @@ using Application.Services;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using UglyToad.PdfPig.Writer;
 
 namespace Infrastructure
 {
@@ -17,6 +19,7 @@ namespace Infrastructure
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPdfParser, PdfParser>();
 
             services.AddHttpClient<IAssessmentClient, AssessmentClient>(client =>
             {

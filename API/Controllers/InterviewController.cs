@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpPost("start")]
-        public async Task<IActionResult> Start([FromBody] StartInterviewRequestDto dto)
+        public async Task<IActionResult> Start([FromForm] StartInterviewRequestDto dto)
         {
             var result = await interviewService.StartInterviewAsync(CurrentUserId, dto);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);

@@ -39,13 +39,13 @@ namespace Application.Services
             return JsonSerializer.Deserialize<EvaluateAnswerResponseDto>(json, Options) ?? throw new InvalidOperationException("Null response rom interview Simulator");
         }
 
-        public async Task<GenerateQuestionsResponseDto> GenerateQuestionsAsync(string jobDescription, Dictionary<string, int> modes)
+        public async Task<GenerateQuestionsResponseDto> GenerateQuestionsAsync(string jobDescription, Dictionary<string, int> modes, string? resume)
         {
             var payload = new GenerateQuestionsRequestDto
             {
                 JobDescription = jobDescription,
                 Counts = modes,
-                Resume = null
+                Resume = resume
             };
             var content = new StringContent(JsonSerializer.Serialize(payload, Options), Encoding.UTF8, "application/json");
 

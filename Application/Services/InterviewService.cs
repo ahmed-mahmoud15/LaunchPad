@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Interview;
 using Application.Interfaces;
+using Application.Services.Cloudinary;
 using Domain.Common;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -18,11 +19,15 @@ namespace Application.Services
     {
         private readonly IUnitOfWork unit;
         private readonly IInterviewSimulatorClient simulator;
+        private readonly IPdfParser pdfParser;
+        private readonly IStorageService storage;
 
-        public InterviewService(IUnitOfWork unit, IInterviewSimulatorClient simulator)
+        public InterviewService(IUnitOfWork unit, IInterviewSimulatorClient simulator, IPdfParser pdfParser, IStorageService storage)
         {
             this.unit = unit;
             this.simulator = simulator;
+            this.pdfParser = pdfParser;
+            this.storage = storage;
         }
 
         public async Task<Result<StartInterviewResponseDto>> StartInterviewAsync(int userId, StartInterviewRequestDto dto)
@@ -47,6 +52,24 @@ namespace Application.Services
                 return Result<StartInterviewResponseDto>.BadRequest("You have to provide job description or valid job id");
             }
 
+            string? resume = null;
+            if (dto.CvId.HasValue)
+            {
+                var cv = await unit.UserCvs.FindAsync(c => c.Id == dto.CvId && c.UserId == userId);
+                if(cv is null)
+                {
+                    return Result<StartInterviewResponseDto>.NotFound("Cv is not found or not belong to you");
+                }
+
+                var pdfStream = await storage.DownloadAsync(cv.FilePath);
+                resume = await pdfParser.ExtractTextAsync(pdfStream);
+
+            }else if(dto.File is not null)
+            {
+                await using var stream = dto.File.OpenReadStream();
+                resume = await pdfParser.ExtractTextAsync(stream);
+            }
+
             GenerateQuestionsResponseDto questionsGenerated;
 
             try
@@ -65,7 +88,8 @@ namespace Application.Services
                     modes[InterviewModes.Resume] = dto.ResumeCount;
                 }
                 
-                questionsGenerated = await simulator.GenerateQuestionsAsync(jobDescription, modes);
+                questionsGenerated = await simulator.GenerateQuestionsAsync(jobDescription, modes, resume);
+
             }
             catch (Exception ex) {
                 return Result<StartInterviewResponseDto>.ServerError($"Interview Simulator service is unreachable: {ex.Message}");
