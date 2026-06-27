@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Cv;
+using Application.DTOs.CvAnalyzer;
 using Application.Interfaces;
 using Application.Services.Cloudinary;
 using Domain.Common;
@@ -184,19 +185,77 @@ namespace Application.Services
 
         private AnalyzeCvResultDto MapToDto(int analysisId, CvAnalyzerResponseDto response)
         {
-            var tech = response.JobMatchResults?.SkillsSummary?.TechnicalSkills;
-            var soft = response.JobMatchResults?.SkillsSummary?.SoftSkills;
+            var jobMatch = response.JobMatchResults;
+            var cvAnalysis = response.CvAnalysisResults;
+            var extractedData = response.ExtractedData;
+
+            var techSummary = jobMatch?.SkillsSummary?.TechnicalSkills;
+            var softSummary = jobMatch?.SkillsSummary?.SoftSkills;
+
+            var techBreakdown = jobMatch?.Breakdown?.TechnicalSkills;
+            var softBreakdown = jobMatch?.Breakdown?.SoftSkills;
+
+            var ats = cvAnalysis?.Breakdown?.AtsCompliance;
+            var language = cvAnalysis?.Breakdown?.LinguisticPrecision;
 
             return new AnalyzeCvResultDto
             {
                 AnalysisId = analysisId,
-                JobMatchScore = response.JobMatchResults?.FinalScore ?? 0,
-                CvQualityScore = response.CvAnalysisResults?.TotalScore ?? 0,
+
+                JobMatchScore = jobMatch?.FinalScore ?? 0,
+
+                OverallSimilarity = jobMatch?.OverallSimilarity ?? 0,
+
+                CvQualityScore = cvAnalysis?.TotalScore ?? 0,
+
                 Feedback = BuildFeedback(response),
-                TechnicalSkillsCovered = tech?.Covered ?? new(),
-                TechnicalSkillsMissing = tech?.Missing ?? new(),
-                SoftSkillsCovered = soft?.Covered ?? new(),
-                SoftSkillsMissing = soft?.Missing ?? new(),
+
+                Grammar = extractedData?.GrammarAnalysis == null
+                    ? null
+                    : new GrammarAnalysisDto
+                    {
+                        ErrorCount = extractedData.GrammarAnalysis.ErrorCount,
+                        TenseConsistent = extractedData.GrammarAnalysis.TenseConsistent,
+                        OverallAssessment = extractedData.GrammarAnalysis.OverallAssessment
+                    },
+
+                TechnicalSkills = new SkillCoverageDto
+                {
+                    Covered = techSummary?.Covered ?? new(),
+                    Missing = techSummary?.Missing ?? new(),
+                    Coverage = techBreakdown?.Coverage ?? 0,
+                    ExactRatio = techBreakdown?.ExactRatio ?? 0
+                },
+
+                SoftSkills = new SkillCoverageDto
+                {
+                    Covered = softSummary?.Covered ?? new(),
+                    Missing = softSummary?.Missing ?? new(),
+                    Coverage = softBreakdown?.Coverage ?? 0,
+                    ExactRatio = softBreakdown?.ExactRatio ?? 0
+                },
+
+                Ats = ats is null
+                    ? null
+                    : new AtsComplianceDto
+                    {
+                        Score = ats.RawScore,
+                        IsSingleColumn = ats.Details?.Layout?.IsSingleColumn ?? false,
+                        UsesStandardFont = ats.Details?.Typography?.IsStandard ?? false,
+                        DetectedFont = ats.Details?.Typography?.DetectedFont,
+                        GoodDateFormatsFound = ats.Details?.DateFormat?.GoodFormatsFound ?? 0
+                    },
+
+                Language = language is null
+                    ? null
+                    : new LinguisticPrecisionDto
+                    {
+                        Score = language.RawScore,
+                        HighImpactVerbCount = language.Details?.Verbs?.HighImpactCount ?? 0,
+                        WeakVerbCount = language.Details?.Verbs?.WeakVerbCount ?? 0,
+                        AverageWordsPerBullet = language.Details?.Brevity?.AvgWordsPerBullet ?? 0,
+                        BulletsOverTwentyWords = language.Details?.Brevity?.BulletsOver20Words ?? 0
+                    }
             };
         }
     }

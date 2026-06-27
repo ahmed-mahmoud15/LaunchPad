@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Cv;
+using Application.DTOs.CvAnalyzer;
 
 namespace Application.Interfaces
 {

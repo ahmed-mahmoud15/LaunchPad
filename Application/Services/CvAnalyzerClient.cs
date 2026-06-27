@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Application.DTOs.Cv;
+using Application.DTOs.CvAnalyzer;
 using Application.Interfaces;
 
 namespace Application.Services
