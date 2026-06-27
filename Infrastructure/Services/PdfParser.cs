@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Interfaces;
 using CloudinaryDotNet.Actions;
 using UglyToad.PdfPig;
+using UglyToad.PdfPig.DocumentLayoutAnalysis.WordExtractor;
 
 namespace Infrastructure.Services
 {
@@ -23,7 +24,15 @@ namespace Infrastructure.Services
 
             foreach(var page in document.GetPages())
             {
-                sb.AppendLine(page.Text);
+                var words = NearestNeighbourWordExtractor.Instance.GetWords(page.Letters);
+
+                foreach (var word in words)
+                {
+                    sb.Append(word.Text);
+                    sb.Append(' ');
+                }
+
+                sb.AppendLine();
             }
 
             return Task.FromResult(sb.ToString()); 
