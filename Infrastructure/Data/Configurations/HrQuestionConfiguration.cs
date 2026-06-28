@@ -11,6 +11,7 @@ namespace Infrastructure.Data.Configurations
             builder.HasKey(h => h.Id);
 
             builder.Property(h => h.Question).IsRequired().HasMaxLength(1000);
+            builder.Property(h => h.AudioQuestion).IsRequired(false);
             builder.Property(h => h.ModelAnswer).HasMaxLength(3000);
         }
     }

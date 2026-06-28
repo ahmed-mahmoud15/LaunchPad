@@ -10,6 +10,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Question { get; set; }
+        public string AudioQuestion { get; set; }
         public string? ModelAnswer { get; set; }
     }
 }

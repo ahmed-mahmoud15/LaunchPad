@@ -29,7 +29,7 @@ namespace Application.Services
             fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(mimeType);
 
             form.Add(fileContent, "file", fileName);
-            form.Add(new StringContent(questionText), "questions");
+            form.Add(new StringContent(questionText), "question");
             form.Add(new StringContent(jobContext), "context");
 
             var response = await http.PostAsync("evaluate_answer", form);

@@ -19,6 +19,7 @@ namespace Application.DTOs.Interview
     {
         public int Id { get; set; }
         public string QuestionText { get; set; }
+        public string QuestionAudio { get; set; }
         public string UserResponse { get; set; }
         public string? Feedback { get; set; }
         public double? Score { get; set; }

@@ -112,7 +112,8 @@ namespace Application.Services
             foreach (var q in questionsGenerated.Questions) {
                 var hrQuestion = new HrQuestion
                 {
-                    Question = q.Text
+                    Question = q.Text,
+                    AudioQuestion = q.AudioBase64
                 };
                 interview.InterviewQuestions.Add(new InterviewQuestion
                 {
@@ -253,6 +254,7 @@ namespace Application.Services
                 UserResponse = q.UserResponse,
                 Feedback = q.Feedback,
                 Score = q.Score,
+                QuestionAudio = q.Question.AudioQuestion
             }).ToList();
 
             return Result<InterviewDetailsDto>.Ok(new InterviewDetailsDto
