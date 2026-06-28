@@ -181,8 +181,7 @@ namespace Application.Services
                         stream,
                         file.FileName,
                         file.ContentType ?? "application/octet-stream",
-                        hrQuestion.Question,
-                        jobContext: null
+                        hrQuestion.Question
                     );
                 }else if(answer is not null)
                 {

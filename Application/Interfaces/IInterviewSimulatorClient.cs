@@ -18,8 +18,7 @@ namespace Application.Interfaces
             Stream fileStream,
             string fileName,
             string mimeType,
-            string questionText,
-            string jobContext
+            string questionText
         );
         Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(
             string questionText,

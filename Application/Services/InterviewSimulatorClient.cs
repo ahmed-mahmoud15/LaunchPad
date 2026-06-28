@@ -23,7 +23,7 @@ namespace Application.Services
         {
             this.http = http;
         }
-        public async Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(Stream fileStream, string fileName, string mimeType, string questionText, string jobContext)
+        public async Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(Stream fileStream, string fileName, string mimeType, string questionText)
         {
             using var form = new MultipartFormDataContent();
 
@@ -32,7 +32,6 @@ namespace Application.Services
 
             form.Add(fileContent, "file", fileName);
             form.Add(new StringContent(questionText), "question");
-            form.Add(new StringContent(jobContext), "context");
 
             var response = await http.PostAsync("evaluate_answer", form);
             response.EnsureSuccessStatusCode();

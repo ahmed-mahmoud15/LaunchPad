@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         [HttpPost("answer/{interviewQuestionId:int}")]
-        public async Task<IActionResult> SubmitAnswer(int interviewQuestionId, IFormFile? file, string? answer)
+        public async Task<IActionResult> SubmitAnswer(int interviewQuestionId, [FromForm]IFormFile? file, [FromForm]string? answer)
         {
             var result = await interviewService.SubmitAnswerAsync(CurrentUserId, interviewQuestionId, file, answer);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
