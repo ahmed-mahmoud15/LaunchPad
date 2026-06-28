@@ -142,7 +142,7 @@ namespace Application.Services
             });
         }
 
-        public async Task<Result<SubmitAnswerResponseDto>> SubmitAnswerAsync(int userId, int interviewQuestionId, IFormFile file)
+        public async Task<Result<SubmitAnswerResponseDto>> SubmitAnswerAsync(int userId, int interviewQuestionId, IFormFile? file, string? answer)
         {
             var interviewQuestion = await unit.InterviewQuestions.GetByIdAsync(interviewQuestionId);
 
@@ -174,14 +174,25 @@ namespace Application.Services
 
             try
             {
-                using var stream = file.OpenReadStream();
-                evaluation = await simulator.EvaluateAnswerAsync(
-                    stream,
-                    file.FileName,
-                    file.ContentType ?? "application/octet-stream",
-                    hrQuestion.Question,
-                    jobContext: null
-                );
+                if(file is not null)
+                {
+                    using var stream = file.OpenReadStream();
+                    evaluation = await simulator.EvaluateAnswerAsync(
+                        stream,
+                        file.FileName,
+                        file.ContentType ?? "application/octet-stream",
+                        hrQuestion.Question,
+                        jobContext: null
+                    );
+                }else if(answer is not null)
+                {
+                    evaluation = await simulator.EvaluateAnswerAsync(hrQuestion.Question, answer);
+                }
+                else
+                {
+                    return Result<SubmitAnswerResponseDto>.BadRequest("You have to provide answer to this question");
+                }
+                
             }
             catch (Exception ex) {
                 return Result<SubmitAnswerResponseDto>.ServerError($"Interview Simulator service is not reachable; {ex.Message}");

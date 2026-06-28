@@ -26,12 +26,9 @@ namespace API.Controllers
         }
 
         [HttpPost("answer/{interviewQuestionId:int}")]
-        public async Task<IActionResult> SubmitAnswer(int interviewQuestionId, IFormFile file)
+        public async Task<IActionResult> SubmitAnswer(int interviewQuestionId, IFormFile? file, string? answer)
         {
-            if (file is null || file.Length == 0)
-                return BadRequest("No audio or video file provided.");
-
-            var result = await interviewService.SubmitAnswerAsync(CurrentUserId, interviewQuestionId, file);
+            var result = await interviewService.SubmitAnswerAsync(CurrentUserId, interviewQuestionId, file, answer);
             return StatusCode(result.StatusCode, result.IsSuccess ? result.Value : result.ErrorMessage);
         }
 

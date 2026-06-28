@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -54,6 +56,20 @@ namespace Application.Services
 
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<GenerateQuestionsResponseDto>(json, Options) ?? throw new InvalidOperationException("Null response from Interview Simulator");
+        }
+
+        public async Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(string questionText, string answerText)
+        {
+            using var form = new MultipartFormDataContent();
+
+            form.Add(new StringContent(questionText), "question");
+            form.Add(new StringContent(answerText), "text_answer");
+
+            var response = await http.PostAsync("evaluate_answer", form);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<EvaluateAnswerResponseDto>(json, Options) ?? throw new InvalidOperationException("Null response rom interview Simulator");
         }
     }
 }

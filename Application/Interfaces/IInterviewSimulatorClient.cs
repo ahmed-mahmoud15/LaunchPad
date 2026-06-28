@@ -21,5 +21,9 @@ namespace Application.Interfaces
             string questionText,
             string jobContext
         );
+        Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(
+            string questionText,
+            string answerText
+        );
     }
 }
