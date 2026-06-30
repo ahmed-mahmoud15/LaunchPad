@@ -31,8 +31,9 @@ namespace Application.DTOs.Interview
     {
         [JsonPropertyName("questions")]
         public List<SimulatorQuestionDto> Questions { get; set; } = new List<SimulatorQuestionDto>();
-        [JsonPropertyName("modes_used")]
-        public List<string> ModesUsed { get; set; } = new();
+        [JsonPropertyName("role_summary")]
+        public string Role { get; set; }
+
     }
 
 

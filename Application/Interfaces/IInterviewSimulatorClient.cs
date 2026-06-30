@@ -18,11 +18,13 @@ namespace Application.Interfaces
             Stream fileStream,
             string fileName,
             string mimeType,
-            string questionText
+            string questionText,
+            string context
         );
         Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(
             string questionText,
-            string answerText
+            string answerText,
+            string context
         );
     }
 }

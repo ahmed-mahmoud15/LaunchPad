@@ -10,6 +10,7 @@ namespace Application.DTOs.Interview
     {
         public int InterviewId { get; set; }
         public List<InterviewQuestionItemDto> Questions { get; set; } = new();
+        public string Role { get; set; }
     }
 
     public  class InterviewQuestionItemDto

@@ -23,7 +23,7 @@ namespace Application.Services
         {
             this.http = http;
         }
-        public async Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(Stream fileStream, string fileName, string mimeType, string questionText)
+        public async Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(Stream fileStream, string fileName, string mimeType, string questionText, string context)
         {
             using var form = new MultipartFormDataContent();
 
@@ -32,6 +32,7 @@ namespace Application.Services
 
             form.Add(fileContent, "file", fileName);
             form.Add(new StringContent(questionText), "question");
+            form.Add(new StringContent(context), "context");
 
             var response = await http.PostAsync("evaluate_answer", form);
             response.EnsureSuccessStatusCode();
@@ -57,12 +58,13 @@ namespace Application.Services
             return JsonSerializer.Deserialize<GenerateQuestionsResponseDto>(json, Options) ?? throw new InvalidOperationException("Null response from Interview Simulator");
         }
 
-        public async Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(string questionText, string answerText)
+        public async Task<EvaluateAnswerResponseDto> EvaluateAnswerAsync(string questionText, string answerText, string context)
         {
             using var form = new MultipartFormDataContent();
 
             form.Add(new StringContent(questionText), "question");
             form.Add(new StringContent(answerText), "text_answer");
+            form.Add(new StringContent(context), "context");
 
             var response = await http.PostAsync("evaluate_answer", form);
             response.EnsureSuccessStatusCode();

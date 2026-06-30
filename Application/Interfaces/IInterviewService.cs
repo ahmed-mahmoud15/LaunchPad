@@ -12,7 +12,7 @@ namespace Application.Interfaces
     public interface IInterviewService
     {
         Task<Result<StartInterviewResponseDto>> StartInterviewAsync(int userId, StartInterviewRequestDto dto);
-        Task<Result<SubmitAnswerResponseDto>> SubmitAnswerAsync(int userId, int interviewQuestionId, IFormFile? file, string? answer);
+        Task<Result<SubmitAnswerResponseDto>> SubmitAnswerAsync(int userId, int interviewQuestionId, IFormFile? file, string? answer, string context);
         Task<Result<int>> EndInterviewAsync(int userId, int interviewId);
         Task<Result<InterviewDetailsDto>> GetInterviewDetailsAsync(int userId, int interviewId);
     }

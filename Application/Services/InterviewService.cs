@@ -138,11 +138,12 @@ namespace Application.Services
             return Result<StartInterviewResponseDto>.Created(new StartInterviewResponseDto
             {
                 InterviewId = interview.Id,
-                Questions = questionItems
+                Questions = questionItems,
+                Role = questionsGenerated.Role
             });
         }
 
-        public async Task<Result<SubmitAnswerResponseDto>> SubmitAnswerAsync(int userId, int interviewQuestionId, IFormFile? file, string? answer)
+        public async Task<Result<SubmitAnswerResponseDto>> SubmitAnswerAsync(int userId, int interviewQuestionId, IFormFile? file, string? answer, string context)
         {
             var interviewQuestion = await unit.InterviewQuestions.GetByIdAsync(interviewQuestionId);
 
@@ -181,11 +182,12 @@ namespace Application.Services
                         stream,
                         file.FileName,
                         file.ContentType ?? "application/octet-stream",
-                        hrQuestion.Question
+                        hrQuestion.Question,
+                        context
                     );
                 }else if(answer is not null)
                 {
-                    evaluation = await simulator.EvaluateAnswerAsync(hrQuestion.Question, answer);
+                    evaluation = await simulator.EvaluateAnswerAsync(hrQuestion.Question, answer, context);
                 }
                 else
                 {

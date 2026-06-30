@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace API.Controllers
 {
@@ -19,6 +20,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
             var result = await authService.LoginAsync(dto);
@@ -27,6 +29,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
             var result = await authService.RegisterAsync(dto);
