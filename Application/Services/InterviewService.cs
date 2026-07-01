@@ -229,9 +229,7 @@ namespace Application.Services
 
             var questions = await unit.InterviewQuestions.FindAllAsync(q => q.InterviewId == interviewId);
 
-            var answered = questions.Where(q => q.Score.HasValue).ToList();
-
-            int finalScore = answered.Count > 0 ? (int)Math.Round(answered.Average(q => q.Score!.Value) * 10) : 0;
+            int finalScore = questions.Any() ? (int)Math.Round(questions.Average(q => q.Score ?? 0) * 10) : 0;
 
             interview.Score = finalScore;
             interview.EndedAt = DateTime.UtcNow;
