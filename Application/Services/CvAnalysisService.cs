@@ -82,7 +82,6 @@ namespace Application.Services
                     Title = dto.JobTitle,
                     Info = dto.JobDescription,
                     Type = Domain.Enums.JobType.FullTime,
-
                 };
 
                 await unit.Jobs.AddAsync(job);
@@ -90,8 +89,6 @@ namespace Application.Services
 
                 jobId = job.Id;
             }
-
-
 
 
             Stream pdfStream;
@@ -105,13 +102,14 @@ namespace Application.Services
             }
 
             var jobDescription = job.Info;
+            var jobTitle = job.Title;
 
             CvAnalyzerResponseDto response;
             try
             {
                 using (pdfStream)
                 {
-                    response = await cvAnalyzerClient.EvaluateAsync(pdfStream, cv.FileName, jobDescription);
+                    response = await cvAnalyzerClient.EvaluateAsync(pdfStream, cv.FileName, jobDescription, jobTitle);
                 }
             }
             catch (Exception ex)
@@ -240,10 +238,10 @@ namespace Application.Services
                     : new AtsComplianceDto
                     {
                         Score = ats.RawScore,
-                        IsSingleColumn = ats.Details?.Layout?.IsSingleColumn ?? false,
-                        UsesStandardFont = ats.Details?.Typography?.IsStandard ?? false,
-                        DetectedFont = ats.Details?.Typography?.DetectedFont,
-                        GoodDateFormatsFound = ats.Details?.DateFormat?.GoodFormatsFound ?? 0
+                        IsSingleColumn = ats.Details?.Details?.Layout?.IsSingleColumn ?? false,
+                        UsesStandardFont = ats.Details?.Details?.Typography?.IsStandard ?? false,
+                        DetectedFont = ats.Details?.Details?.Typography?.DetectedFont,
+                        GoodDateFormatsFound = ats.Details?.Details?.DateFormat?.GoodFormatsFound ?? 0
                     },
 
                 Language = language is null
@@ -251,10 +249,10 @@ namespace Application.Services
                     : new LinguisticPrecisionDto
                     {
                         Score = language.RawScore,
-                        HighImpactVerbCount = language.Details?.Verbs?.HighImpactCount ?? 0,
-                        WeakVerbCount = language.Details?.Verbs?.WeakVerbCount ?? 0,
-                        AverageWordsPerBullet = language.Details?.Brevity?.AvgWordsPerBullet ?? 0,
-                        BulletsOverTwentyWords = language.Details?.Brevity?.BulletsOver20Words ?? 0
+                        HighImpactVerbCount = language.Details?.Details?.Verbs?.HighImpactCount ?? 0,
+                        WeakVerbCount = language.Details?.Details?.Verbs?.WeakVerbCount ?? 0,
+                        AverageWordsPerBullet = language.Details?.Details?.Brevity?.AvgWordsPerBullet ?? 0,
+                        BulletsOverTwentyWords = language.Details?.Details?.Brevity?.BulletsOver20Words ?? 0
                     }
             };
         }

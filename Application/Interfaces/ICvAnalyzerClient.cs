@@ -10,6 +10,6 @@ namespace Application.Interfaces
 {
     public interface ICvAnalyzerClient
     {
-        public Task<CvAnalyzerResponseDto> EvaluateAsync(Stream pdfStream, string fileName, string jobDescription);
+        public Task<CvAnalyzerResponseDto> EvaluateAsync(Stream pdfStream, string fileName, string jobDescription, string jobTitle);
     }
 }

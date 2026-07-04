@@ -22,11 +22,12 @@ namespace Application.Services
             this.http = http;
         }
 
-        public async Task<CvAnalyzerResponseDto> EvaluateAsync(Stream pdfStream, string fileName, string jobDescription)
+        public async Task<CvAnalyzerResponseDto> EvaluateAsync(Stream pdfStream, string fileName, string jobDescription, string jobTitle)
         {
             using var form = new MultipartFormDataContent();
             form.Add(new StreamContent(pdfStream), "cv_file", fileName);
             form.Add(new StringContent(jobDescription), "job_description");
+            form.Add(new StringContent(jobTitle), "target_role");
 
             var response = await http.PostAsync("api/v1/evaluate", form);
             response.EnsureSuccessStatusCode();

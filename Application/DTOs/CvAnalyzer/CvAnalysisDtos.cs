@@ -46,6 +46,11 @@ namespace Application.DTOs.CvAnalyzer
         public double RawScore { get; set; }
 
         [JsonPropertyName("details")]
+        public AtsDetailsDto2? Details { get; set; }
+    }
+    public class AtsDetailsDto2
+    {
+        [JsonPropertyName("details")]
         public AtsDetailsDto? Details { get; set; }
     }
     public class AtsDetailsDto
@@ -83,6 +88,11 @@ namespace Application.DTOs.CvAnalyzer
         [JsonPropertyName("raw_score")]
         public double RawScore { get; set; }
 
+        [JsonPropertyName("details")]
+        public LinguisticDetailsDto2? Details { get; set; }
+    }
+    public class LinguisticDetailsDto2
+    {
         [JsonPropertyName("details")]
         public LinguisticDetailsDto? Details { get; set; }
     }
